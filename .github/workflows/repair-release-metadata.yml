@@ -19,7 +19,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          gh release edit v0.4.4.002 --title "ApkStart v0.4.4.002" --notes-file .github/release-notes-v0.4.4.002-en.md
+          gh release edit v0.4.4.002 --title "ApkStart v0.4.4.002" --notes-file .github/release-notes-v0.4.4.002.md
           while IFS= read -r tag; do
             [ -z "$tag" ] && continue
             if [ "$tag" != "v0.4.4.002" ]; then
