@@ -6,6 +6,10 @@ on:
     branches:
       - 'release/**'
 
+concurrency:
+  group: apkstart-release-${{ github.ref_name }}
+  cancel-in-progress: true
+
 permissions:
   contents: write
 
