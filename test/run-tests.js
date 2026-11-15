@@ -6,6 +6,7 @@
 const fs = require('fs');
 const path = require('path');
 const os = require('os');
+const vm = require('vm');
 
 let passed = 0;
 let failed = 0;
@@ -197,6 +198,10 @@ test('Android app window loads localization before its shell script', () => {
   assert(uiShell.includes('<html lang="en">'), 'shell must default to English');
   assert(uiShell.indexOf('i18n.js') >= 0 && uiShell.indexOf('i18n.js') < uiShell.indexOf('shell.js'), 'i18n.js must load before shell.js');
   assert(uiI18n.includes('function translateString'), 'shared string translator must be available for native prompts');
+  for (const file of ['../src/main.js', '../src/core/engine.js', '../src/core/installer.js', '../src/ui/app.js', '../src/ui/i18n.js', '../src/ui/shell.js']) {
+    const source = fs.readFileSync(path.join(__dirname, file), 'utf8');
+    assert.doesNotThrow(() => new vm.Script(source, { filename: file }), 'syntax error in ' + file);
+  }
 });
 test('Native dialogs and notifications follow the selected UI language', () => {
   assert(uiMain.includes('function nativeUiText'), 'native UI translation helper missing');
@@ -207,6 +212,7 @@ test('Android guest locale is set and verified through LocaleManager', () => {
   const uiInstaller = fs.readFileSync(path.join(__dirname, '../src/core/installer.js'), 'utf8');
   assert(uiInstaller.includes('cmd locale set-app-locales'), 'per-app English locale command missing');
   assert(uiInstaller.includes('cmd locale get-app-locales'), 'per-app locale verification missing');
+  assert(uiEngine.includes('cmd locale set-app-locales'), 'Android Settings/system UI locale setup missing');
 });
 test('fork version and lockfile match upstream ApkStart 0.4.3', () => {
   assert(appPackage.version === '0.4.3', `package version is ${appPackage.version}`);
