@@ -1044,7 +1044,9 @@
   // Additional full-sentence UI coverage found during the localization audit.
   const auditedUiTranslations = {
     en: {
-      '首次使用：打开右上角设置 → 运行时 → 一键完成，再回来安装应用即可。': 'First time: open Settings in the upper-right corner → Runtime → Set up automatically, then return here to install apps.',
+
+      '应用': 'App',
+      '正在启动安卓运行时…': 'Starting Android runtime…',      '首次使用：打开右上角设置 → 运行时 → 一键完成，再回来安装应用即可。': 'First time: open Settings in the upper-right corner → Runtime → Set up automatically, then return here to install apps.',
       '提示：所有应用共享同一个 Android 运行时，所以第二个应用的启动几乎是瞬时的。': 'Tip: all apps share one Android runtime, so the second app starts almost instantly.',
       '运行中': 'Running',
       '切换到前台': 'Bring to front',
@@ -1096,7 +1098,9 @@
       '运行时、已装应用与快照都不受影响。': 'the runtime, installed apps, and snapshots are not affected.'
     },
     fa: {
-      '首次使用：打开右上角设置 → 运行时 → 一键完成，再回来安装应用即可。': 'بار اول، از تنظیمات بالای صفحه وارد «محیط اجرا» شوید و «راه‌اندازی خودکار» را بزنید؛ سپس برای نصب برنامه برگردید.',
+
+      '应用': 'برنامه',
+      '正在启动安卓运行时…': 'در حال راه‌اندازی محیط اندروید…',      '首次使用：打开右上角设置 → 运行时 → 一键完成，再回来安装应用即可。': 'بار اول، از تنظیمات بالای صفحه وارد «محیط اجرا» شوید و «راه‌اندازی خودکار» را بزنید؛ سپس برای نصب برنامه برگردید.',
       '提示：所有应用共享同一个 Android 运行时，所以第二个应用的启动几乎是瞬时的。': 'نکته: همه برنامه‌ها از یک محیط اندروید مشترک استفاده می‌کنند؛ بنابراین اجرای برنامه دوم تقریباً فوری است.',
       '运行中': 'در حال اجرا',
       '切换到前台': 'آوردن به پیش‌زمینه',
