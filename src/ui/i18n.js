@@ -2,8 +2,8 @@
 
 /*
  * Lightweight offline UI localization for ApkStart.
- * Chinese remains the source language; English and Persian are selected locally
- * and the preference is stored in localStorage.
+ * Legacy Chinese source strings are retained as localization keys.
+ * English and Persian translations are selected locally, and the preference is stored in localStorage.
  */
 (() => {
   const dictionaries = {
