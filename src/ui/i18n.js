@@ -2532,6 +2532,26 @@
   Object.assign(dictionaries.en, coreAuditTranslations.en);
   Object.assign(dictionaries.fa, coreAuditTranslations.fa);
 
+  // Dynamic error-message fragments found in the final source scan.
+  const finalCoreFragments = {
+  "en": {
+    " 未能启动": " failed to start",
+    "下载失败 HTTP ": "Download failed (HTTP ",
+    "上次 ": "Previous ",
+    " 渲染后端启动即崩溃，本次改用 ": " rendering backend crashed at startup. Trying ",
+    " 先试": " first"
+  },
+  "fa": {
+    " 未能启动": " اجرا نشد",
+    "下载失败 HTTP ": "دانلود ناموفق بود (HTTP ",
+    "上次 ": "دفعه قبل ",
+    " 渲染后端启动即崩溃，本次改用 ": " موتور رندر هنگام راه‌اندازی از کار افتاد؛ این بار ",
+    " 先试": " ابتدا امتحان می‌شود"
+  }
+};
+  Object.assign(dictionaries.en, finalCoreFragments.en);
+  Object.assign(dictionaries.fa, finalCoreFragments.fa);
+
   const original = new WeakMap();
   function translateTextNode(node, lang) {
     const raw = node.nodeValue;
