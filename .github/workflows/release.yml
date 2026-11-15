@@ -30,12 +30,16 @@ jobs:
           if ("${{ github.ref_type }}" -eq "tag") {
             $tag = "${{ github.ref_name }}"
             if (-not $tag.StartsWith('v')) { $tag = "v$tag" }
+          } elseif ("${{ github.ref_name }}".StartsWith('release/')) {
+            # Preserve the public release label from the release branch.
+            $tag = "${{ github.ref_name }}".Substring(8)
+            if (-not $tag.StartsWith('v')) { $tag = "v$tag" }
           } else {
-            # Manual runs and branch-triggered runs must use the app version,
-            # never the branch name (e.g. "main" -> "vmain").
             $package = Get-Content package.json -Raw | ConvertFrom-Json
-            if (-not $package.version) { Write-Error "package.json version is missing"; exit 1 }
-            $tag = "v$($package.version)"
+            $version = $package.displayVersion
+            if (-not $version) { $version = $package.version }
+            if (-not $version) { Write-Error "package.json displayVersion/version is missing"; exit 1 }
+            $tag = "v$version"
           }
           "tag=$tag" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8 -Append
           Write-Output "Release tag: $tag"
