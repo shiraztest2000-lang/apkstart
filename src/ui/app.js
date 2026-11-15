@@ -34,13 +34,16 @@ function fmtSize(bytes) {
 
 function relTime(ts) {
   if (!ts) return '';
-  const d = Date.now() - ts;
-  if (d < 60000) return '刚刚';
-  if (d < 3600000) return `${Math.floor(d / 60000)} 分钟前`;
-  if (d < 86400000) return `${Math.floor(d / 3600000)} 小时前`;
-  if (d < 86400000 * 30) return `${Math.floor(d / 86400000)} 天前`;
-  const lang = localStorage.getItem('apkstart-language') === 'fa' ? 'fa-IR' : 'en-US';
-  return new Date(ts).toLocaleDateString(lang);
+  const d = Math.max(0, Date.now() - ts);
+  const language = localStorage.getItem('apkstart-language') || 'en';
+  const n = d < 3600000 ? Math.floor(d / 60000)
+    : d < 86400000 ? Math.floor(d / 3600000)
+      : Math.floor(d / 86400000);
+  if (d < 60000) return language === 'fa' ? 'همین حالا' : 'just now';
+  if (d < 3600000) return language === 'fa' ? `${n} دقیقه پیش` : `${n} min ago`;
+  if (d < 86400000) return language === 'fa' ? `${n} ساعت پیش` : `${n} hr ago`;
+  if (d < 86400000 * 30) return language === 'fa' ? `${n} روز پیش` : `${n} days ago`;
+  return new Date(ts).toLocaleDateString(language === 'fa' ? 'fa-IR' : 'en-US');
 }
 
 /**
