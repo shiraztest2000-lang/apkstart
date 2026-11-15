@@ -1026,6 +1026,21 @@
   Object.assign(dictionaries.en, guideTranslations.en);
   Object.assign(dictionaries.fa, guideTranslations.fa);
 
+  const finalUiTranslations = {
+  "en": {
+    "Android-x86 / Bliss OS 的 ISO 或 IMG 路径，留空使用默认位置": "Path to an Android-x86 / Bliss OS ISO or IMG file; leave blank to use the default location",
+    "：用": " : use",
+    "，\n            再按": " , then press "
+  },
+  "fa": {
+    "Android-x86 / Bliss OS 的 ISO 或 IMG 路径，留空使用默认位置": "مسیر فایل ISO یا IMG مربوط به Android-x86 یا Bliss OS؛ برای استفاده از مسیر پیش‌فرض خالی بگذارید",
+    "：用": ": استفاده کنید",
+    "，\n            再按": "، سپس فشار دهید "
+  }
+};
+  Object.assign(dictionaries.en, finalUiTranslations.en);
+  Object.assign(dictionaries.fa, finalUiTranslations.fa);
+
   const original = new WeakMap();
   function translateTextNode(node, lang) {
     const raw = node.nodeValue;
