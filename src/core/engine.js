@@ -537,7 +537,7 @@ class Runtime {
       }
       const verified = String(await client.shell('cmd locale get-system-locales', { timeout: 5000 })).trim();
       const effective = String(await client.shell('am get-config', { timeout: 5000 })).trim();
-      if (!/^en-US(?:,|$)/i.test(verified) || !/\\ben-rUS\\b/i.test(effective)) {
+      if (!/^en-US(?:,|$)/i.test(verified) || !/\ben-rUS\b/i.test(effective)) {
         this.log(`Android locale was not verified as English (locales: ${verified || 'empty'}; config: ${effective.slice(0, 160)})`);
       } else {
         this.log('Android guest system locale verified: en-US');
