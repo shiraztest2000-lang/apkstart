@@ -207,6 +207,94 @@
       '语言设置':'تنظیمات زبان اندروید','应用管理':'مدیریت برنامه‌ها'
     }
   };
+
+  const extraTranslations = {
+    en: {
+      '启动菜单':'Start menu','我已安装完成':'I have finished installing','稍后再说':'Not now',
+      '正在统计…':'Calculating…','清理可回收文件':'Clean up reclaimable files','清理旧版本残留':'Clean up old-version leftovers',
+      '修复网络':'Repair network','重置安卓数据':'Reset Android data','导出诊断报告':'Export diagnostic report',
+      '重建快捷方式':'Rebuild shortcuts','开机自动启动（默认开启）':'Start automatically with Windows (enabled by default)',
+      '随 Windows 登录常驻托盘，双击桌面图标秒开应用，无需手动启动。':'Stay in the system tray after Windows sign-in; open apps from desktop shortcuts without starting ApkStart manually.',
+      '标准':'Standard','特大':'Extra large','显示大小':'Display size','安卓声音':'Android audio',
+      '飞行模式':'Airplane mode','系统动画':'System animations','轻量容器':'Lightweight container',
+      '容器细节（高级）':'Container details (advanced)','高级参数（一般无需修改）':'Advanced options (usually no changes needed)',
+      '自带运行时（推荐，QEMU + Android-x86，无第三方依赖）':'Built-in runtime (recommended; QEMU + Android-x86; no third-party dependencies)',
+      '连接已有运行时（高级：复用 WSA / 其他模拟器的 adb 端口）':'Connect to an existing runtime (advanced: reuse WSA or another emulator adb port)',
+      '系统镜像（ISO）':'System image (ISO)','内存 (MB，0 = 自动)':'Memory (MB, 0 = automatic)',
+      'CPU 核心（0 = 自动）':'CPU cores (0 = automatic)','空闲回收（分钟，0 = 不回收）':'Idle cleanup (minutes, 0 = disabled)',
+      '通用兼容镜像（自动管理）':'Universal compatibility image (managed automatically)','兼容镜像':'Compatibility image',
+      '未下载':'Not downloaded','下载兼容镜像':'Download compatibility image','启动运行时':'Start runtime',
+      '停止内置虚拟机':'Stop built-in virtual machine','刷新':'Refresh','一键流畅优化':'One-click performance optimization',
+      '立即扩容':'Expand now','自动':'Automatic','网络加速（推荐）':'Network acceleration (recommended)',
+      '保留快速启动快照（推荐）':'Keep quick-boot snapshot (recommended)','深度裁剪系统后台':'Deep-trim background system services',
+      '开机预热（推荐）':'Prewarm at startup (recommended)','自动选择较快的源（推荐）':'Automatically choose the fastest source (recommended)',
+      '只用 Gitee（国内通常最快）':'Use Gitee only (usually fastest in China)','只用 GitHub':'Use GitHub only',
+      '自动尝试公共加速镜像':'Try public acceleration mirrors automatically','下载镜像前缀（可选，加速 GitHub）':'Download mirror prefix (optional; accelerate GitHub)',
+      '下载线程数（1–16，默认 8）':'Download threads (1–16; default 8)','Gitee 更新源（可选）':'Gitee update source (optional)',
+      'Gitee 只读 token（一般不用填）':'Gitee read-only token (usually not required)','探测':'Detect',
+      '一键流畅优化':'One-click performance optimization','关闭系统动画、放开后台进程上限并把当前应用加入电池白名单，低配电脑体感最明显。':'Disable system animations, relax background process limits, and add the current app to the battery whitelist. Most noticeable on low-end PCs.',
+      '立即扩容':'Expand now','数据分区已扩容':'Data partition expanded','系统镜像':'System image',
+      '运行时数据目录（系统镜像 · 已装应用 · 快照）':'Runtime data directory (system image, installed apps, snapshots)',
+      '安卓数据目录（应用、游戏与快速启动快照）':'Android data directory (apps, games, and quick-boot snapshots)',
+      '本机共享目录':'Local shared folder','安卓内对应目录':'Matching Android directory',
+      '快捷方式目录':'Shortcut directory','关联 .apk 文件':'Associate .apk files',
+      '安卓系统设置（不用进安卓桌面）':'Android system settings (without opening the Android desktop)',
+      '媒体音量':'Media volume','字体大小':'Font size','画质（安卓内部渲染分辨率）':'Graphics quality (internal Android render resolution)',
+      '虚拟机优先级':'Virtual machine priority','引擎模式':'Engine mode','设备地址':'Device address',
+      '自动模式（默认，无需设置）':'Automatic mode (default; no setup required)','本机自适应参数':'Adaptive settings for this PC',
+      '更新与下载源':'Update and download sources','软件更新':'Software updates','关于':'About',
+      '文件互通':'File sharing','系统集成':'System integration','桌面与应用':'Desktop and apps',
+      '显示模式':'Display mode','竖屏画面大小':'Portrait display size','鼠标键位':'Mouse controls',
+      '性能与资源占用':'Performance and resource usage','资源策略':'Resource profile','下载与更新源':'Download and update sources',
+      '设置修改后立即生效':'Settings take effect immediately','完成':'Done','卸载 ApkStart':'Uninstall ApkStart',
+      '安卓原生设置':'Native Android settings','显示设置':'Display settings','声音设置':'Sound settings',
+      '语言设置':'Android language settings','应用管理':'App management'
+    },
+    fa: {
+      '启动菜单':'منوی شروع','我已安装完成':'نصب را کامل کردم','稍后再说':'بعداً',
+      '正在统计…':'در حال محاسبه…','清理可回收文件':'پاک‌سازی فایل‌های قابل‌بازیابی','清理旧版本残留':'پاک‌سازی باقی‌مانده نسخه‌های قبلی',
+      '修复网络':'تعمیر شبکه','重置安卓数据':'بازنشانی داده‌های اندروید','导出诊断报告':'خروجی گرفتن از گزارش عیب‌یابی',
+      '重建快捷方式':'بازسازی میان‌برها','开机自动启动（默认开启）':'اجرای خودکار هنگام روشن‌شدن ویندوز (به‌صورت پیش‌فرض فعال)',
+      '随 Windows 登录常驻托盘，双击桌面图标秒开应用，无需手动启动。':'پس از ورود به ویندوز در System Tray فعال می‌ماند؛ با دوبار کلیک روی میان‌بر دسکتاپ، برنامه بدون اجرای دستی ApkStart باز می‌شود.',
+      '标准':'استاندارد','特大':'بسیار بزرگ','显示大小':'اندازه نمایش','安卓声音':'صدای اندروید',
+      '飞行模式':'حالت پرواز','系统动画':'پویانمایی‌های سیستم','轻量容器':'کانتینر سبک',
+      '容器细节（高级）':'جزئیات کانتینر (پیشرفته)','高级参数（一般无需修改）':'تنظیمات پیشرفته (معمولاً نیازی به تغییر نیست)',
+      '自带运行时（推荐，QEMU + Android-x86，无第三方依赖）':'محیط اجرای داخلی (پیشنهادی؛ QEMU + Android-x86؛ بدون وابستگی جانبی)',
+      '连接已有运行时（高级：复用 WSA / 其他模拟器的 adb 端口）':'اتصال به محیط اجرای موجود (پیشرفته: استفاده از پورت adb در WSA یا شبیه‌ساز دیگر)',
+      '系统镜像（ISO）':'ایمیج سیستم (ISO)','内存 (MB，0 = 自动)':'حافظه (مگابایت؛ ۰ = خودکار)',
+      'CPU 核心（0 = 自动）':'هسته‌های CPU (۰ = خودکار)','空闲回收（分钟，0 = 不回收）':'پاک‌سازی در حالت بیکاری (دقیقه؛ ۰ = غیرفعال)',
+      '通用兼容镜像（自动管理）':'ایمیج سازگاری عمومی (مدیریت خودکار)','兼容镜像':'ایمیج سازگاری',
+      '未下载':'دانلود نشده','下载兼容镜像':'دانلود ایمیج سازگاری','启动运行时':'راه‌اندازی محیط اجرا',
+      '停止内置虚拟机':'توقف ماشین مجازی داخلی','刷新':'تازه‌سازی','一键流畅优化':'بهینه‌سازی عملکرد با یک کلیک',
+      '立即扩容':'افزایش ظرفیت اکنون','自动':'خودکار','网络加速（推荐）':'شتاب‌دهی شبکه (پیشنهادی)',
+      '保留快速启动快照（推荐）':'نگه‌داشت snapshot شروع سریع (پیشنهادی)','深度裁剪系统后台':'کاهش عمیق سرویس‌های پس‌زمینه سیستم',
+      '开机预热（推荐）':'آماده‌سازی اولیه هنگام اجرا (پیشنهادی)','自动选择较快的源（推荐）':'انتخاب خودکار سریع‌ترین منبع (پیشنهادی)',
+      '只用 Gitee（国内通常最快）':'فقط استفاده از Gitee (معمولاً سریع‌تر در چین)','只用 GitHub':'فقط استفاده از GitHub',
+      '自动尝试公共加速镜像':'امتحان خودکار آینه‌های عمومی شتاب‌دهنده','下载镜像前缀（可选，加速 GitHub）':'پیشوند آینه دانلود (اختیاری؛ برای افزایش سرعت GitHub)',
+      '下载线程数（1–16，默认 8）':'تعداد رشته‌های دانلود (۱ تا ۱۶؛ پیش‌فرض ۸)','Gitee 更新源（可选）':'منبع به‌روزرسانی Gitee (اختیاری)',
+      'Gitee 只读 token（一般不用填）':'توکن فقط‌خواندنی Gitee (معمولاً نیازی نیست)','探测':'شناسایی',
+      '关闭系统动画、放开后台进程上限并把当前应用加入电池白名单，低配电脑体感最明显。':'پویانمایی‌های سیستم را خاموش می‌کند، محدودیت فرایندهای پس‌زمینه را کاهش می‌دهد و برنامه فعلی را به فهرست مجاز باتری اضافه می‌کند؛ روی رایانه‌های ضعیف محسوس‌تر است.',
+      '数据分区已扩容':'پارتیشن داده افزایش ظرفیت یافت','系统镜像':'ایمیج سیستم',
+      '运行时数据目录（系统镜像 · 已装应用 · 快照）':'مسیر داده‌های محیط اجرا (ایمیج سیستم، برنامه‌های نصب‌شده و snapshotها)',
+      '安卓数据目录（应用、游戏与快速启动快照）':'مسیر داده‌های اندروید (برنامه‌ها، بازی‌ها و snapshotهای شروع سریع)',
+      '本机共享目录':'پوشه اشتراکی رایانه','安卓内对应目录':'پوشه متناظر در اندروید',
+      '快捷方式目录':'مسیر میان‌برها','关联 .apk 文件':'اتصال فایل‌های ‎.apk‎',
+      '安卓系统设置（不用进安卓桌面）':'تنظیمات سیستم اندروید (بدون نیاز به ورود به دسکتاپ اندروید)',
+      '媒体音量':'بلندی صدای رسانه','字体大小':'اندازه قلم','画质（安卓内部渲染分辨率）':'کیفیت تصویر (وضوح رندر داخلی اندروید)',
+      '虚拟机优先级':'اولویت ماشین مجازی','引擎模式':'حالت موتور اجرا','设备地址':'نشانی دستگاه',
+      '自动模式（默认，无需设置）':'حالت خودکار (پیش‌فرض؛ بدون نیاز به تنظیم)','本机自适应参数':'تنظیمات سازگار با این رایانه',
+      '更新与下载源':'منابع به‌روزرسانی و دانلود','软件更新':'به‌روزرسانی نرم‌افزار','关于':'درباره',
+      '文件互通':'اشتراک‌گذاری فایل','系统集成':'یکپارچه‌سازی سیستم','桌面与应用':'دسکتاپ و برنامه‌ها',
+      '显示模式':'حالت نمایش','竖屏画面大小':'اندازه تصویر عمودی','鼠标键位':'تنظیمات ماوس',
+      '性能与资源占用':'عملکرد و مصرف منابع','资源策略':'حالت مصرف منابع','下载与更新源':'منابع دانلود و به‌روزرسانی',
+      '设置修改后立即生效':'تغییرات تنظیمات بلافاصله اعمال می‌شوند','完成':'انجام شد','卸载 ApkStart':'حذف ApkStart',
+      '安卓原生设置':'تنظیمات اصلی اندروید','显示设置':'تنظیمات نمایش','声音设置':'تنظیمات صدا',
+      '语言设置':'تنظیمات زبان اندروید','应用管理':'مدیریت برنامه‌ها'
+    }
+  };
+  Object.assign(dictionaries.en, extraTranslations.en);
+  Object.assign(dictionaries.fa, extraTranslations.fa);
+
   Object.assign(dictionaries.en, settingsTranslations.en);
   Object.assign(dictionaries.fa, settingsTranslations.fa);
 
@@ -272,12 +360,38 @@
     const saved = localStorage.getItem('apkstart-language') || 'zh';
     if (picker) picker.addEventListener('change', () => apply(picker.value));
     apply(saved);
-    const observer = new MutationObserver(() => {
+    const translateAttributes = (root, lang) => {
+      const nodes = [];
+      if (root.nodeType === Node.ELEMENT_NODE) nodes.push(root);
+      if (root.querySelectorAll) nodes.push(...root.querySelectorAll('[placeholder],[title],[aria-label]'));
+      for (const el of nodes) {
+        ['placeholder', 'title', 'aria-label'].forEach((attr) => {
+          const value = el.getAttribute(attr);
+          if (!value) return;
+          const dataKey = attr;
+          if (!el.dataset[dataKey]) el.dataset[dataKey] = value;
+          const source = el.dataset[dataKey];
+          const translated = dictionaries[lang] && dictionaries[lang][source];
+          if (translated) el.setAttribute(attr, translated);
+          else if (lang === 'zh') el.setAttribute(attr, source);
+        });
+      }
+    };
+    const observer = new MutationObserver((records) => {
       const lang = localStorage.getItem('apkstart-language') || 'zh';
       if (lang === 'zh') return;
-      const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
-      let node;
-      while ((node = walker.nextNode())) translateTextNode(node, lang);
+      for (const record of records) {
+        if (record.type === 'characterData') translateTextNode(record.target, lang);
+        for (const node of record.addedNodes || []) {
+          if (node.nodeType === Node.TEXT_NODE) translateTextNode(node, lang);
+          else if (node.nodeType === Node.ELEMENT_NODE) {
+            const walker = document.createTreeWalker(node, NodeFilter.SHOW_TEXT);
+            let child;
+            while ((child = walker.nextNode())) translateTextNode(child, lang);
+            translateAttributes(node, lang);
+          }
+        }
+      }
     });
     observer.observe(document.body, { childList: true, subtree: true, characterData: true });
   }
