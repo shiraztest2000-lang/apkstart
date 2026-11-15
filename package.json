@@ -1,7 +1,7 @@
 {
   "name": "apkstart",
   "productName": "ApkStart",
-  "version": "0.4.4.002",
+  "version": "0.4.4-2",
   "description": "Windows Android app launcher / اجراکننده برنامه‌های اندروید در ویندوز",
   "main": "src/main.js",
   "author": "RoutineMiku",
@@ -49,5 +49,6 @@
   },
   "dependencies": {
     "@napi-rs/lzma": "^1.5.3"
-  }
+  },
+  "displayVersion": "0.4.4.002"
 }
