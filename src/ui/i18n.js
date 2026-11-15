@@ -150,6 +150,66 @@
       '已固定':'سنجاق شد','已取消固定':'سنجاق برداشته شد','正在打开':'در حال باز کردن','正在安装':'در حال نصب'
     }
   };
+
+  const settingsTranslations = {
+    en: {
+      '磁盘总占用（运行时 + 安卓数据 + 缓存）':'Total disk usage (runtime + Android data + cache)',
+      '安卓系统设置（不用进安卓桌面）':'Android system settings (no need to open the Android desktop)',
+      '媒体音量':'Media volume','字体大小':'Font size','画质（安卓内部渲染分辨率）':'Graphics quality (Android rendering resolution)',
+      '虚拟机优先级':'Virtual machine priority','引擎模式':'Engine mode','设备地址':'Device address',
+      '运行时数据目录（系统镜像 · 已装应用 · 快照）':'Runtime data directory (system image · installed apps · snapshots)',
+      '安卓数据目录（应用、游戏与快速启动快照）':'Android data directory (apps, games, and quick-boot snapshots)',
+      '默认：C 盘用户数据目录':'Default: user data directory on drive C:',
+      '默认：运行时目录下的 avd 文件夹':'Default: avd folder inside the runtime directory',
+      '两侧目录会持续双向同步；在安卓应用里保存到该目录的文件，会出现在本机共享目录中。':'The two folders stay synchronized in both directions. Files saved there by Android apps appear in the shared folder on this PC.',
+      '留空即可：公开仓库匿名也能读':'Leave blank: public repositories can be accessed anonymously',
+      '留空 = 桌面':'Leave blank = Desktop','微信公众号二维码':'WeChat public account QR code','抖音二维码':'Douyin QR code',
+      '扫码关注公众号':'Scan to follow the public account','抖音 · 日常MIKU':'Douyin · RoutineMIKU',
+      '扫描并清掉旧版本留下的程序目录、失效的卸载项和更新临时文件':'Scan for and remove old program folders, stale uninstall entries, and update temporary files',
+      '安卓虚拟机没有网络时（应用里联网页面一直黑屏/转圈），用这个把安卓数据重置掉来修网络。应用清单会保留，点开应用会自动重装':'If Android has no network (online pages stay blank or keep loading), reset Android data to repair networking. The app list is retained and apps are reinstalled when opened.',
+      '清空安卓 /data 用户数据 + 已装应用 + 快速启动快照，还原成刚装好系统的干净状态':'Clear Android /data user data, installed apps, and quick-boot snapshots to restore a clean system state.',
+      '虚拟机窗口已打开。按下面 6 步操作一次，之后 ApkStart 会直接从磁盘启动，不再需要镜像。':'The virtual machine window is open. Complete these six steps once; ApkStart will then boot directly from disk without needing the image again.',
+      '自动模式（默认，无需设置）':'Automatic mode (default; no setup required)','本机自适应参数':'Adaptive settings for this PC',
+      '更新与下载源':'Update and download sources','安卓数据目录已更新':'Android data directory updated',
+      '软件更新':'Software updates','关于':'About','运行时与环境':'Runtime and environment','运行时':'Runtime',
+      '文件互通':'File sharing','系统集成':'System integration','桌面与应用':'Desktop and apps',
+      '显示模式':'Display mode','竖屏画面大小':'Portrait display size','鼠标键位':'Mouse controls',
+      '性能与资源占用':'Performance and resource usage','资源策略':'Resource profile','下载与更新源':'Download and update sources',
+      '设置修改后立即生效':'Settings take effect immediately','完成':'Done','卸载 ApkStart':'Uninstall ApkStart',
+      '安卓原生设置':'Native Android settings','显示设置':'Display settings','声音设置':'Sound settings',
+      '语言设置':'Android language settings','应用管理':'App management'
+    },
+    fa: {
+      '磁盘总占用（运行时 + 安卓数据 + 缓存）':'مجموع فضای اشغال‌شده دیسک (محیط اجرا + داده‌های اندروید + حافظه نهان)',
+      '安卓系统设置（不用进安卓桌面）':'تنظیمات سیستم اندروید (بدون نیاز به ورود به دسکتاپ اندروید)',
+      '媒体音量':'بلندی صدای رسانه','字体大小':'اندازه قلم','画质（安卓内部渲染分辨率）':'کیفیت تصویر (وضوح رندر داخلی اندروید)',
+      '虚拟机优先级':'اولویت ماشین مجازی','引擎模式':'حالت موتور اجرا','设备地址':'نشانی دستگاه',
+      '运行时数据目录（系统镜像 · 已装应用 · 快照）':'مسیر داده‌های محیط اجرا (تصویر سیستم، برنامه‌های نصب‌شده و snapshotها)',
+      '安卓数据目录（应用、游戏与快速启动快照）':'مسیر داده‌های اندروید (برنامه‌ها، بازی‌ها و snapshotهای شروع سریع)',
+      '默认：C 盘用户数据目录':'پیش‌فرض: پوشه داده‌های کاربر در درایو C',
+      '默认：运行时目录下的 avd 文件夹':'پیش‌فرض: پوشه avd در مسیر محیط اجرا',
+      '两侧目录会持续双向同步；在安卓应用里保存到该目录的文件，会出现在本机共享目录中。':'دو پوشه به‌صورت پیوسته و دوطرفه همگام می‌شوند. فایل‌هایی که برنامه‌های اندروید در این مسیر ذخیره کنند، در پوشه اشتراکی رایانه دیده خواهند شد.',
+      '留空即可：公开仓库匿名也能读':'خالی بگذارید؛ مخزن‌های عمومی بدون ورود نیز قابل‌خواندن هستند',
+      '留空 = 桌面':'خالی = دسکتاپ','微信公众号二维码':'کد QR حساب عمومی وی‌چت','抖音二维码':'کد QR دویین',
+      '扫码关注公众号':'برای دنبال‌کردن حساب، کد را اسکن کنید','抖音 · 日常MIKU':'دویین · RoutineMIKU',
+      '扫描并清掉旧版本留下的程序目录、失效的卸载项和更新临时文件':'پوشه‌های برنامه باقی‌مانده از نسخه‌های قدیمی، ورودی‌های حذف نامعتبر و فایل‌های موقت به‌روزرسانی را پیدا و پاک کنید',
+      '安卓虚拟机没有网络时（应用里联网页面一直黑屏/转圈），用这个把安卓数据重置掉来修网络。应用清单会保留，点开应用会自动重装':'اگر ماشین مجازی اندروید اینترنت ندارد و صفحات آنلاین برنامه‌ها خالی می‌مانند یا مدام بارگذاری می‌شوند، داده‌های اندروید را برای تعمیر شبکه بازنشانی کنید. فهرست برنامه‌ها حفظ می‌شود و با بازکردن هر برنامه دوباره نصب خواهد شد.',
+      '清空安卓 /data 用户数据 + 已装应用 + 快速启动快照，还原成刚装好系统的干净状态':'داده‌های کاربر در ‎/data‎، برنامه‌های نصب‌شده و snapshotهای شروع سریع را پاک می‌کند و سیستم را به وضعیت تمیز پس از نصب بازمی‌گرداند.',
+      '虚拟机窗口已打开。按下面 6 步操作一次，之后 ApkStart 会直接从磁盘启动，不再需要镜像。':'پنجره ماشین مجازی باز است. این شش مرحله را یک‌بار انجام دهید؛ پس از آن ApkStart مستقیماً از دیسک راه‌اندازی می‌شود و دیگر به فایل ایمیج نیاز ندارد.',
+      '自动模式（默认，无需设置）':'حالت خودکار (پیش‌فرض؛ بدون نیاز به تنظیم)','本机自适应参数':'تنظیمات سازگار با این رایانه',
+      '更新与下载源':'منابع به‌روزرسانی و دانلود','安卓数据目录已更新':'مسیر داده‌های اندروید به‌روز شد',
+      '软件更新':'به‌روزرسانی نرم‌افزار','关于':'درباره','运行时与环境':'محیط اجرا و تنظیمات','运行时':'محیط اجرا',
+      '文件互通':'اشتراک‌گذاری فایل','系统集成':'یکپارچه‌سازی سیستم','桌面与应用':'دسکتاپ و برنامه‌ها',
+      '显示模式':'حالت نمایش','竖屏画面大小':'اندازه تصویر عمودی','鼠标键位':'تنظیمات ماوس',
+      '性能与资源占用':'عملکرد و مصرف منابع','资源策略':'حالت مصرف منابع','下载与更新源':'منابع دانلود و به‌روزرسانی',
+      '设置修改后立即生效':'تغییرات تنظیمات بلافاصله اعمال می‌شوند','完成':'انجام شد','卸载 ApkStart':'حذف ApkStart',
+      '安卓原生设置':'تنظیمات اصلی اندروید','显示设置':'تنظیمات نمایش','声音设置':'تنظیمات صدا',
+      '语言设置':'تنظیمات زبان اندروید','应用管理':'مدیریت برنامه‌ها'
+    }
+  };
+  Object.assign(dictionaries.en, settingsTranslations.en);
+  Object.assign(dictionaries.fa, settingsTranslations.fa);
+
   Object.assign(dictionaries.en, runtimeTranslations.en);
   Object.assign(dictionaries.fa, runtimeTranslations.fa);
 
