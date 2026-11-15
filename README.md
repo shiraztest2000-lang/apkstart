@@ -4,8 +4,7 @@
 
 <p align="center">
   <a href="README.fa.md">🇮🇷 فارسی</a> ·
-  <a href="README.en.md">🇬🇧 English</a> ·
-  <a href="README.zh-CN.md">🇨🇳 简体中文</a>
+  <a href="README.en.md">🇬🇧 English</a>
 </p>
 
 ## English
@@ -20,6 +19,3 @@ See the full [English project overview and setup guide](README.en.md).
 
 راهنمای کامل [معرفی پروژه و راه‌اندازی به زبان فارسی](README.fa.md).
 
----
-
-Original Simplified Chinese documentation: [README.zh-CN.md](README.zh-CN.md).
