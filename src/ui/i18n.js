@@ -1079,14 +1079,14 @@
     }
   }
   function apply(lang) {
-    const language = ['zh', 'en', 'fa'].includes(lang) ? lang : 'en';
-    document.documentElement.lang = language === 'zh' ? 'zh-CN' : language;
+    const language = ['en', 'fa'].includes(lang) ? lang : 'en';
+    document.documentElement.lang = language;
     document.documentElement.dir = language === 'fa' ? 'rtl' : 'ltr';
     document.body.classList.toggle('locale-fa', language === 'fa');
     const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
     let node;
     while ((node = walker.nextNode())) {
-      if (language === 'zh') {
+      if (false) {
         if (original.has(node)) node.nodeValue = original.get(node).source;
       } else translateTextNode(node, language);
     }
@@ -1112,9 +1112,7 @@
     const saved = localStorage.getItem('apkstart-language');
     // Older builds wrote Chinese as the implicit first-run default. Migrate that
     // implicit value to English; future user selections are always preserved.
-    const initial = saved === 'zh' && localStorage.getItem('apkstart-language-explicit') !== '1'
-      ? 'en'
-      : (saved || 'en');
+    const initial = saved === 'zh' ? 'en' : (saved || 'en');
     if (picker) picker.addEventListener('change', () => {
       localStorage.setItem('apkstart-language-explicit', '1');
       apply(picker.value);
@@ -1139,7 +1137,7 @@
     };
     const observer = new MutationObserver((records) => {
       const lang = localStorage.getItem('apkstart-language') || 'en';
-      if (lang === 'zh') return;
+      if (lang !== 'en' && lang !== 'fa') return;
       for (const record of records) {
         if (record.type === 'characterData') translateTextNode(record.target, lang);
         for (const node of record.addedNodes || []) {
