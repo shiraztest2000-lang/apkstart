@@ -34,7 +34,7 @@
       '保存并迁移':'Save and migrate','关联 .apk 文件':'Associate .apk files','卸载 ApkStart':'Uninstall ApkStart',
       '一键卸载':'Uninstall','安卓原生设置':'Native Android settings','显示设置':'Display settings',
       '声音设置':'Sound settings','语言设置':'Language settings','应用管理':'App management',
-      'English':'English','فارسی':'فارسی','中文':'中文'
+      'English':'English','فارسی':'فارسی','中文':'中文','Language':'زبان','双击即装的 Windows 安卓应用启动器：APK 安装、桌面快捷方式、独立窗口运行、文件双向互通。':'اجراکننده برنامه‌های اندروید در ویندوز: نصب APK، ساخت میان‌بر دسکتاپ، اجرای مستقل برنامه‌ها و همگام‌سازی دوطرفه فایل‌ها.','Language':'Language','双击即装的 Windows 安卓应用启动器：APK 安装、桌面快捷方式、独立窗口运行、文件双向互通。':'A Windows Android app launcher: install APKs, create desktop shortcuts, run apps in separate windows, and sync files both ways.'
     },
     fa: {
       '未连接运行时':'محیط اجرا متصل نیست','设置':'تنظیمات','搜索已安装应用':'جست‌وجوی برنامه‌های نصب‌شده',
@@ -157,11 +157,26 @@
   function translateTextNode(node, lang) {
     const raw = node.nodeValue;
     if (!raw || !raw.trim()) return;
-    if (!original.has(node)) original.set(node, raw);
-    const source = original.get(node);
+    let record = original.get(node);
+    if (!record) {
+      record = { source: raw, translated: null };
+      original.set(node, record);
+    } else if (record.translated !== null && raw !== record.translated) {
+      // The app updated this text node dynamically; treat the new text as its source.
+      record.source = raw;
+      record.translated = null;
+    }
+    const source = record.source;
     const key = source.trim();
     const translated = dictionaries[lang] && dictionaries[lang][key];
-    if (translated) node.nodeValue = source.replace(key, translated);
+    if (translated) {
+      const next = source.replace(key, translated);
+      node.nodeValue = next;
+      record.translated = next;
+    } else {
+      node.nodeValue = source;
+      record.translated = null;
+    }
   }
   function apply(lang) {
     const language = ['zh', 'en', 'fa'].includes(lang) ? lang : 'zh';
@@ -172,7 +187,7 @@
     let node;
     while ((node = walker.nextNode())) {
       if (language === 'zh') {
-        if (original.has(node)) node.nodeValue = original.get(node);
+        if (original.has(node)) node.nodeValue = original.get(node).source;
       } else translateTextNode(node, language);
     }
     document.querySelectorAll('[placeholder],[title],[aria-label]').forEach((el) => {
