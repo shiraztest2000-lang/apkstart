@@ -135,6 +135,8 @@ jobs:
     permissions:
       contents: write
     steps:
+      - uses: actions/checkout@v4
+
       - name: Publish Release after all assets are uploaded
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
