@@ -1,14 +1,14 @@
 'use strict';
 /**
- * 便携版打包：产出 dist/ApkStart-win64-portable/
- *   ApkStart.exe（即 electron.exe 改名）+ resources/app（本应用源码）
- * 无需安装器，解压即用；将来接 electron-builder 出安装包时可复用同一目录结构。
+ * Build the portable edition in dist/ApkStart-win64-portable/
+ *   ApkStart.exe (renamed from electron.exe) + resources/app (application source)
+ * No installer is required; extract and run. The same directory layout can be reused by electron-builder.
  */
 const fs = require('fs');
 const path = require('path');
 
 const ROOT = path.join(__dirname, '..');
-// 允许指定输出目录（用于目标目录被正在运行的实例占用时，先构建到别处再替换）
+// Allow a custom output directory when a running instance locks the target; build elsewhere first, then replace it.
 let OUT = process.env.APKSTART_PACK_OUT
   ? path.resolve(process.env.APKSTART_PACK_OUT)
   : path.join(ROOT, 'dist', 'ApkStart-win64-portable');
@@ -18,30 +18,30 @@ function copy(src, dest) {
   fs.cpSync(src, dest, { recursive: true });
 }
 
-console.log('打包便携版 →', OUT);
-// 目标已存在时不做整树删除：部分环境会拦截批量删除，且打包中途失败会丢掉
-// 上一个可用版本。改为先把旧目录改名保留，再全新构建；占用中则自动换目录。
+console.log('Building portable edition →', OUT);
+// Do not recursively delete an existing target: some environments block bulk deletion, and a failed build could destroy
+// the last working build. Rename and preserve the old directory before building; use another output path if it is locked.
 if (fs.existsSync(OUT)) {
   try {
     const backup = `${OUT}.prev-${new Date().toISOString().replace(/[:.]/g, '-')}`;
     fs.renameSync(OUT, backup);
-    console.log('旧版本已保留 →', backup);
+    console.log('Previous build preserved →', backup);
   } catch (_) {
-    // 某些环境（杀软 / 搜索索引 / 资源管理器）会长时间持有目录句柄，
-    // 整目录改名必然 EBUSY；这时退到带版本号的目录，产物一样可用且不再重名。
+    // Some environments (antivirus, search indexing, or File Explorer) hold directory handles for a long time,
+    // making a directory rename fail with EBUSY. Fall back to a versioned output directory.
     OUT = path.join(ROOT, 'dist', `ApkStart-v${require(path.join(ROOT, 'package.json')).version}-win64-portable`);
-    console.log('旧目录被占用，改输出到 →', OUT);
+    console.log('Previous directory is locked; using output path →', OUT);
   }
 }
 fs.mkdirSync(path.join(OUT, 'resources', 'app'), { recursive: true });
 
 // 1. Electron 运行时
-console.log('复制 Electron 运行时…');
+console.log('Copying Electron runtime…');
 copy(ELECTRON_DIST, OUT);
 fs.rmSync(path.join(OUT, 'resources', 'default_app.asar'), { force: true });
 
-// 1.1 语言包瘦身：Electron 自带 55 种语言，合计 41MB，我们只用中文界面。
-//     只留 zh-CN / zh-TW / en-US，其余删掉（-39MB，等于整包小 15%）。
+// 1.1 Reduce locale payload: Electron ships 55 locale packs (about 41 MB). Keep the locales supported by the app.
+//     Keep zh-CN / zh-TW / en-US and remove the rest (about 39 MB saved, reducing the package by roughly 15%).
 const KEEP_LOCALES = new Set(['zh-CN.pak', 'zh-TW.pak', 'en-US.pak']);
 let localeSaved = 0;
 try {
@@ -53,17 +53,17 @@ try {
   }
 } catch (_) { /* 没有 locales 目录也不影响 */ }
 
-// 1.2 没人会点开的文件：更新日志、调试符号、部分无用的 pak（各自 0.1~9MB）
+// 1.2 Remove files not needed by users: changelogs, debug symbols, and selected unused pak files (0.1–9 MB each).
 for (const rel of ['LICENSES.chromium.html.bak', 'vk_swiftshader_icd.json.bak']) {
   fs.rmSync(path.join(OUT, rel), { force: true });
 }
 
-// 1.3 可省掉的运行库：
-//     d3dcompiler_47.dll 负责把 ANGLE 的 HLSL 编成 GPU 指令，但 Windows 8.1 起
-//     System32 里就自带同名 DLL，LoadLibrary 找不到包内那份会自然用系统的。
-//     实测删掉后界面/图标/字体渲染完全正常（--smoke 截图对比无差异）。压紧 2.1MB。
-//     注意：vk_swiftshader.dll / vulkan-1.dll 不能删 —— GPU 驱动不可用时 Chromium
-//     靠它做软件兜底，删了会白屏。
+// 1.3 Runtime libraries that can be omitted:
+//     d3dcompiler_47.dll compiles ANGLE HLSL into GPU instructions. Since Windows 8.1,
+//     System32 includes this DLL. If the bundled copy is absent, LoadLibrary uses the system copy.
+//     Smoke-test screenshots showed no UI, icon, or font rendering differences after removal. Saves about 2.1 MB.
+//     Do not remove vk_swiftshader.dll or vulkan-1.dll: Chromium relies on them
+//     for software-rendering fallback when the GPU driver is unavailable; removing them can cause a blank window.
 let pruneSaved = 0;
 for (const rel of ['d3dcompiler_47.dll']) {
   const p = path.join(OUT, rel);
