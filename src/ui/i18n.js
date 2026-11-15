@@ -1196,8 +1196,8 @@
     const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
     let node;
     while ((node = walker.nextNode())) translateTextNode(node, language);
-    document.querySelectorAll('[placeholder],[title],[aria-label]').forEach((el) => {
-      ['placeholder', 'title', 'aria-label'].forEach((attr) => {
+    document.querySelectorAll('[placeholder],[title],[aria-label],[alt]').forEach((el) => {
+      ['placeholder', 'title', 'aria-label', 'alt'].forEach((attr) => {
         const value = el.getAttribute(attr);
         if (!value) return;
         const key = 'attr:' + attr;
@@ -1230,9 +1230,9 @@
     const translateAttributes = (root, lang) => {
       const nodes = [];
       if (root.nodeType === Node.ELEMENT_NODE) nodes.push(root);
-      if (root.querySelectorAll) nodes.push(...root.querySelectorAll('[placeholder],[title],[aria-label]'));
+      if (root.querySelectorAll) nodes.push(...root.querySelectorAll('[placeholder],[title],[aria-label],[alt]'));
       for (const el of nodes) {
-        ['placeholder', 'title', 'aria-label'].forEach((attr) => {
+        ['placeholder', 'title', 'aria-label', 'alt'].forEach((attr) => {
           const value = el.getAttribute(attr);
           if (!value) return;
           const dataKey = attr;
