@@ -171,10 +171,10 @@
     const translated = dictionaries[lang] && dictionaries[lang][key];
     if (translated) {
       const next = source.replace(key, translated);
-      node.nodeValue = next;
+      if (node.nodeValue !== next) node.nodeValue = next;
       record.translated = next;
     } else {
-      node.nodeValue = source;
+      if (node.nodeValue !== source) node.nodeValue = source;
       record.translated = null;
     }
   }
