@@ -526,9 +526,32 @@ class Runtime {
   }
 
   async prepare(client) {
-    // Per-app English locales are applied by Installer.launch after the package
-    // is installed. The Google Play system image does not allow adb root, and
-    // Android's stock "cmd locale" shell does not expose a system-wide setter.
+    // Set English for Android's Settings and system-dialog packages where the
+    // image exposes Android 13+ per-app locale support. User apps are handled by
+    // Installer.launch after installation. This avoids adb root/system-property
+    // writes, which are unavailable on Google Play images.
+    const systemPackages = [
+      'com.android.settings',
+      'com.android.systemui',
+      'com.android.permissioncontroller',
+      'com.google.android.permissioncontroller',
+      'com.android.packageinstaller',
+      'com.google.android.packageinstaller',
+    ];
+    for (const pkg of systemPackages) {
+      try {
+        const current = String(await client.shell(`cmd locale get-app-locales ${pkg}`, { timeout: 4000 })).trim();
+        if (!/en-US/i.test(current)) {
+          await client.shell(`cmd locale set-app-locales ${pkg} --locales en-US`, { timeout: 5000 });
+          const verified = String(await client.shell(`cmd locale get-app-locales ${pkg}`, { timeout: 4000 })).trim();
+          if (!/en-US/i.test(verified)) this.log(`System UI locale not verified for ${pkg}: ${verified || 'empty'}`);
+          else this.log(`English system-app locale applied: ${pkg}`);
+        }
+      } catch (e) {
+        // A package may be absent or an older Android image may not support per-app locales.
+        this.log(`Could not set English locale for system package ${pkg}: ${e.message}`);
+      }
+    }
     if (!this._freeformReady) {
       try { this._freeformReady = await client.ensureFreeform(); } catch (_) { /* ignore */ }
     }
