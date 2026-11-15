@@ -549,7 +549,7 @@ class Runtime {
           await client.shell('setprop ctl.restart zygote', { timeout: 10000 }).catch(() => {});
           await this.waitAndroidReady(client, 60000, () => {});
           const effective = String(await client.shell('am get-config', { timeout: 5000 })).trim();
-          if (!/\\ben-rUS\\b/i.test(effective)) {
+          if (!/\ben-rUS\b/i.test(effective)) {
             this.log(`Android locale property is en-US, but effective config is not verified: ${effective.slice(0, 180)}`);
           }
         } else {
