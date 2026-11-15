@@ -1101,6 +1101,9 @@
     const picker = document.getElementById('languagePicker');
     if (picker && picker.value !== language) picker.value = language;
     localStorage.setItem('apkstart-language', language);
+    if (window.apkstart && typeof window.apkstart.setLanguage === 'function') {
+      window.apkstart.setLanguage(language).catch(() => {});
+    }
   }
 
   function init() {
