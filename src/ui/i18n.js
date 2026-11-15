@@ -1779,6 +1779,49 @@
 };
   Object.assign(dictionaries.fa, completePersianHtmlTranslations);
 
+  const shortAndDynamicTranslations = {
+  "en": {
+    "：用": ": use ",
+    "选到": "select",
+    "：选": ": select",
+    "自动": "Automatic",
+    "探测": "Probe",
+    "刷新": "Refresh",
+    "标准": "Standard",
+    "特大": "Extra large",
+    "宽松": "Comfortable",
+    "待机": "Idle",
+    "引擎": "Engine",
+    "仍失败请把安装包路径换成纯英文短路径（如 D:\\\\a.apk）。": "If it still fails, move the installer to a short path containing English characters only (for example, D:\\\\a.apk).",
+    "共 ": "Total: ",
+    "• 删除全部已安装的第三方 app（含红果、游戏等）及其数据、登录态\\n": "• Remove all installed third-party apps (including games), their data, and sign-in sessions\\n",
+    "• 删除当前 AVD 的快速启动快照\\n": "• Delete the current AVD quick-start snapshot\\n",
+    "修复会按「代价从小到大」依次尝试：\\n\\n": "Repair tries these steps in order, from least to most disruptive:\\n\\n",
+    "   但应用内的登录态、追剧记录等会丢失\\n\\n": "   but in-app sign-in sessions, watch history, and similar data will be lost\\n\\n"
+  },
+  "fa": {
+    "：用": ": از کلید ",
+    "选到": "انتخاب کنید",
+    "：选": ": انتخاب کنید",
+    "自动": "خودکار",
+    "探测": "آزمایش",
+    "刷新": "تازه‌سازی",
+    "标准": "استاندارد",
+    "特大": "بسیار بزرگ",
+    "宽松": "آزاد",
+    "待机": "آماده‌به‌کار",
+    "引擎": "موتور",
+    "仍失败请把安装包路径换成纯英文短路径（如 D:\\\\a.apk）。": "اگر باز هم ناموفق بود، فایل نصب را به مسیری کوتاه با حروف انگلیسی منتقل کنید (مثلاً D:\\\\a.apk).",
+    "共 ": "مجموع: ",
+    "• 删除全部已安装的第三方 app（含红果、游戏等）及其数据、登录态\\n": "• همه برنامه‌های شخص ثالث (از جمله بازی‌ها)، داده‌ها و نشست‌های ورود آن‌ها حذف می‌شوند\\n",
+    "• 删除当前 AVD 的快速启动快照\\n": "• snapshot شروع سریع AVD فعلی حذف می‌شود\\n",
+    "修复会按「代价从小到大」依次尝试：\\n\\n": "تعمیر به‌ترتیب از کم‌خطرترین روش‌ها انجام می‌شود:\\n\\n",
+    "   但应用内的登录态、追剧记录等会丢失\\n\\n": "   اما نشست‌های ورود، سابقه تماشا و داده‌های مشابه داخل برنامه از بین می‌روند\\n\\n"
+  }
+};
+  Object.assign(dictionaries.en, shortAndDynamicTranslations.en);
+  Object.assign(dictionaries.fa, shortAndDynamicTranslations.fa);
+
   const original = new WeakMap();
   function translateTextNode(node, lang) {
     const raw = node.nodeValue;
@@ -1800,7 +1843,7 @@
       // Translate stable Chinese phrases inside dynamic strings (for example, counts and versions).
       let partial = source;
       const fragments = Object.keys(dictionary)
-        .filter((item) => item.length >= 3 && /[\u4e00-\u9fff]/.test(item))
+        .filter((item) => (item.length >= 3 || ['共 ', '自动', '待机', '引擎', '打开', '完成', '取消', '继续', '未知', '修复'].includes(item)) && /[\u4e00-\u9fff]/.test(item))
         .sort((a, b) => b.length - a.length);
       for (const item of fragments) {
         if (partial.includes(item)) partial = partial.split(item).join(dictionary[item]);
