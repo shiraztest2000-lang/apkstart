@@ -1,19 +1,36 @@
 name: Release
 
 on:
-  release:
-    types: [published]
+  push:
+    tags: ['v*']
+  workflow_dispatch:
 
 permissions:
   contents: write
 
 jobs:
   build:
+    outputs:
+      release_tag: ${{ steps.release_meta.outputs.tag }}
     name: 构建便携版并发布
     runs-on: windows-latest
 
     steps:
       - uses: actions/checkout@v4
+
+      - name: تعیین نسخه انتشار
+        id: release_meta
+        shell: pwsh
+        run: |
+          if ("${{ github.event_name }}" -eq "workflow_dispatch") {
+            $package = Get-Content package.json -Raw | ConvertFrom-Json
+            $tag = "v$($package.version)"
+          } else {
+            $tag = "${{ steps.release_meta.outputs.tag }}"
+            if (-not $tag.StartsWith('v')) { $tag = "v$tag" }
+          }
+          "tag=$tag" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8 -Append
+          Write-Output "Release tag: $tag"
 
       - uses: actions/setup-node@v4
         with:
@@ -43,40 +60,42 @@ jobs:
       - name: 压缩产物（7-Zip，体积闸门 100MiB）
         shell: pwsh
         run: |
-          $tag = "${{ github.ref_name }}"
+          $tag = "${{ needs.build.outputs.release_tag }}"
           if (-not $tag.StartsWith('v')) { $tag = "v$tag" }
           node build/zip.js dist/ApkStart-win64-portable "ApkStart-$tag-win64-portable.zip" --limit-mb 100
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           Get-Item "ApkStart-$tag-win64-portable.zip" | Select-Object Name, Length
 
-      # 创建 Release 并上传轻量便携版（壳层极小，运行时首次启动按需下载）
-      - name: 创建 Release
+      # Create a draft release first. Assets must be uploaded before publishing because published releases may be immutable.
+      - name: Create draft Release and upload portable package
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         shell: pwsh
         run: |
-          $tag = "${{ github.ref_name }}"
-          if (-not $tag.StartsWith('v')) { $tag = "v$tag" }
+          $tag = "${{ steps.release_meta.outputs.tag }}"
           $zip = "ApkStart-$tag-win64-portable.zip"
-          # 幂等：release 已存在（如重跑 / 重推 tag）就跳过 create，只上传资产
-          $existing = gh release view $tag --json tagName -q .tagName 2>$null
-          # 有手写的发版说明就用它（.github/release-notes-<tag>.md），比 --generate-notes
-          # 的「Full Changelog」有用得多；没有才退回自动生成。
+          $existing = gh release view $tag --json tagName,isDraft -q '[.tagName,.isDraft] | @tsv' 2>$null
           $notes = ".github/release-notes-$tag.md"
           if (-not $existing) {
             if (Test-Path $notes) {
-              gh release create $tag --title "ApkStart $tag" --notes-file $notes
+              gh release create $tag --draft --title "ApkStart $tag" --notes-file $notes
             } else {
-              gh release create $tag --title "ApkStart $tag" --generate-notes
+              gh release create $tag --draft --title "ApkStart $tag" --generate-notes
             }
             if ($LASTEXITCODE -ne 0) { exit 1 }
+          } else {
+            $parts = $existing -split "`t"
+            if ($parts.Count -lt 2 -or $parts[1] -ne "true") {
+              Write-Error "Release $tag already exists and is published/immutable. Increase package.json version before starting a new release."
+              exit 1
+            }
           }
           $ok = $false
           for ($i = 1; $i -le 3 -and -not $ok; $i++) {
             gh release upload $tag $zip --clobber
             if ($LASTEXITCODE -eq 0) { $ok = $true } else { Start-Sleep -Seconds 15 }
           }
-          if (-not $ok) { Write-Error "上传失败: $zip"; exit 1 }
+          if (-not $ok) { Write-Error "Portable upload failed: $zip"; exit 1 }
           gh release view $tag --json assets --jq '.assets[].name'
 
       # 同步到 Gitee：国内直连 GitHub 只有几十 KB/s，Gitee 通常能跑几 MB/s。
@@ -110,6 +129,22 @@ jobs:
             node tools/publish-gitee.js $tag --zip "ApkStart-$tag-win64-portable.zip"
           }
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+  publish:
+    name: Publish completed Release
+    runs-on: ubuntu-latest
+    needs: [build, full]
+    permissions:
+      contents: write
+    steps:
+      - name: Publish Release after all assets are uploaded
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        shell: bash
+        run: |
+          tag="${{ needs.build.outputs.release_tag }}"
+          gh release edit "$tag" --draft=false
+          gh release view "$tag" --json isDraft,assets --jq '{isDraft: .isDraft, assets: [.assets[].name]}'
 
   full:
     name: 构建完整版（内置运行时，离线开箱即用）
