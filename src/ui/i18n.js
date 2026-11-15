@@ -1085,11 +1085,7 @@
     document.body.classList.toggle('locale-fa', language === 'fa');
     const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
     let node;
-    while ((node = walker.nextNode())) {
-      if (false) {
-        if (original.has(node)) node.nodeValue = original.get(node).source;
-      } else translateTextNode(node, language);
-    }
+    while ((node = walker.nextNode())) translateTextNode(node, language);
     document.querySelectorAll('[placeholder],[title],[aria-label]').forEach((el) => {
       ['placeholder', 'title', 'aria-label'].forEach((attr) => {
         const value = el.getAttribute(attr);
