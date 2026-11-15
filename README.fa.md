@@ -1,6 +1,6 @@
 # ApkStart
 
-<p align="center"><img src="docs/images/logo.png" alt="لوگوی ApkStart" width="160" /></p>
+<p align="center"><img src="src/ui/assets/new-logo.png" alt="لوگوی ApkStart" width="160" /></p>
 
 <p align="center">
   <a href="README.fa.md">🇮🇷 فارسی</a> ·
