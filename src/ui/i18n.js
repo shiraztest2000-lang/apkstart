@@ -67,6 +67,92 @@
     }
   };
 
+
+  const runtimeTranslations = {
+    en: {
+      '正在运行':'Running','运行中':'Running','切换到前台':'Bring to front','暂无应用':'No apps yet',
+      '运行时未部署 —— 打开设置 → 运行时，一键完成':'Runtime not deployed — open Settings → Runtime and select Set up automatically',
+      '需要部署':'Deployment required','引导中':'Guided setup','软件模拟':'Software rendering',
+      '待下载镜像':'Image download pending','运行时引擎未安装 —— 打开设置 → 运行时一键完成':'Runtime engine not installed — open Settings and complete automatic setup',
+      '运行时已就绪 —— 安装 APK 或双击桌面图标会自动开机':'Runtime ready — install an APK or double-click a desktop shortcut to start',
+      '待开机':'Not started','安装中':'Installing','待安装':'Waiting for installation','一切就绪':'All ready',
+      '准备中…':'Preparing…','准备失败':'Setup failed','请检查网络后重试':'Check your network and try again',
+      '运行时已就绪':'Runtime ready','开机未完成':'Startup incomplete','未知错误':'Unknown error',
+      '已有安装任务在进行':'An installation is already in progress','请等当前应用装完再继续。':'Wait for the current app to finish installing.',
+      '桌面快捷方式已创建，双击即可直接打开。':'Desktop shortcut created. Double-click to open.',
+      '创建快捷方式失败':'Failed to create shortcut','已卸载':'Uninstalled','卸载失败':'Uninstall failed',
+      '打开应用':'Open app','创建桌面快捷方式':'Create desktop shortcut','固定到顶部':'Pin to top',
+      '打开 APK 所在位置':'Open APK location','清除应用数据':'Clear app data','取消固定':'Unpin',
+      '数据已清除':'App data cleared','清除失败':'Failed to clear data','读取中…':'Reading…',
+      '运行时未启动':'Runtime is not running','Wi-Fi 已开':'Wi-Fi on','Wi-Fi 已关':'Wi-Fi off',
+      '已生效':'Applied','运行时未就绪':'Runtime not ready','Wi-Fi 已开启':'Wi-Fi enabled',
+      'Wi-Fi 已关闭':'Wi-Fi disabled','已进入飞行模式':'Airplane mode enabled','已退出飞行模式':'Airplane mode disabled',
+      '系统动画已开启':'System animations enabled','系统动画已关闭，界面更快':'System animations disabled for a faster interface',
+      '字体大小已调整':'Font size updated','显示大小已调整':'Display size updated','音量已调整':'Volume updated',
+      '优化失败，运行时可能未启动':'Optimization failed; the runtime may not be running',
+      '需要先打开一次应用，让运行时启动':'Open an app once to start the runtime',
+      '读取数据分区信息失败':'Failed to read data partition information','尚未创建':'Not created',
+      '统计不可用':'Statistics unavailable','网络不可用':'Network unavailable','打开下载页':'Open download page',
+      '立即更新':'Update now','更新失败':'Update failed','正在更新…':'Updating…','检查中…':'Checking…',
+      '正在连接 GitHub…':'Connecting to GitHub…','已是最新版本':'Already up to date','检查失败':'Check failed',
+      '更新中…':'Updating…','资源策略已切换':'Resource profile changed','下一次打开应用生效':'Takes effect next time you open an app',
+      '先选一个容量':'Choose a capacity first','开始扩容':'Start expanding','扩容中…':'Expanding…',
+      '数据分区已扩容':'Data partition expanded','扩容失败':'Expansion failed','已恢复系统组件':'System components restored',
+      '重启运行时后生效':'Takes effect after restarting the runtime','已切全屏':'Switched to fullscreen',
+      '已切竖屏窗口':'Switched to portrait window','画面大小已更新':'Display size updated',
+      '已补齐快捷方式':'Shortcuts recreated','快捷方式都还在':'All shortcuts are present',
+      '桌面与开始菜单入口正常':'Desktop and Start menu shortcuts are OK','诊断报告已导出':'Diagnostic report exported',
+      '导出失败':'Export failed','已经是精简状态':'Already optimized','清理完成':'Cleanup complete',
+      '清理失败':'Cleanup failed','重置失败':'Reset failed','请重试':'Please try again',
+      '安卓数据已重置':'Android data reset','开始修复':'Start repair','网络仍未恢复':'Network not restored',
+      '网络已恢复':'Network restored','已联网':'Connected','修复失败':'Repair failed','扫描失败':'Scan failed',
+      '安装完成':'Installation complete','安装失败':'Installation failed','已启动':'Launched','启动失败':'Launch failed',
+      '已固定':'Pinned','已取消固定':'Unpinned','正在打开':'Opening','正在安装':'Installing'
+    },
+    fa: {
+      '正在运行':'در حال اجرا','运行中':'در حال اجرا','切换到前台':'انتقال به پنجره فعال','暂无应用':'هنوز برنامه‌ای وجود ندارد',
+      '运行时未部署 —— 打开设置 → 运行时，一键完成':'محیط اجرا نصب نشده است؛ از تنظیمات ← محیط اجرا، راه‌اندازی خودکار را اجرا کنید',
+      '需要部署':'نیازمند راه‌اندازی','引导中':'در حال راهنمایی','软件模拟':'پردازش نرم‌افزاری',
+      '待下载镜像':'در انتظار دانلود ایمیج','运行时引擎未安装 —— 打开设置 → 运行时一键完成':'موتور اجرا نصب نیست؛ از تنظیمات، راه‌اندازی خودکار را انجام دهید',
+      '运行时已就绪 —— 安装 APK 或双击桌面图标会自动开机':'محیط اجرا آماده است؛ با نصب APK یا دوبار کلیک روی میان‌بر، اجرا آغاز می‌شود',
+      '待开机':'در انتظار شروع','安装中':'در حال نصب','待安装':'در انتظار نصب','一切就绪':'همه‌چیز آماده است',
+      '准备中…':'در حال آماده‌سازی…','准备失败':'آماده‌سازی ناموفق بود','请检查网络后重试':'اتصال اینترنت را بررسی و دوباره تلاش کنید',
+      '运行时已就绪':'محیط اجرا آماده است','开机未完成':'راه‌اندازی کامل نشد','未知错误':'خطای نامشخص',
+      '已有安装任务在进行':'یک فرایند نصب دیگر در حال انجام است','请等当前应用装完再继续。':'تا پایان نصب برنامه فعلی صبر کنید.',
+      '桌面快捷方式已创建，双击即可直接打开。':'میان‌بر دسکتاپ ساخته شد؛ برای اجرا دوبار کلیک کنید.',
+      '创建快捷方式失败':'ساخت میان‌بر ناموفق بود','已卸载':'حذف شد','卸载失败':'حذف ناموفق بود',
+      '打开应用':'باز کردن برنامه','创建桌面快捷方式':'ساخت میان‌بر دسکتاپ','固定到顶部':'سنجاق‌کردن در بالا',
+      '打开 APK 所在位置':'باز کردن محل فایل APK','清除应用数据':'پاک‌کردن داده‌های برنامه','取消固定':'برداشتن سنجاق',
+      '数据已清除':'داده‌های برنامه پاک شد','清除失败':'پاک‌سازی ناموفق بود','读取中…':'در حال خواندن…',
+      '运行时未启动':'محیط اجرا آغاز نشده است','Wi-Fi 已开':'وای‌فای روشن است','Wi-Fi 已关':'وای‌فای خاموش است',
+      '已生效':'اعمال شد','运行时未就绪':'محیط اجرا آماده نیست','Wi-Fi 已开启':'وای‌فای فعال شد',
+      'Wi-Fi 已关闭':'وای‌فای غیرفعال شد','已进入飞行模式':'حالت پرواز فعال شد','已退出飞行模式':'حالت پرواز غیرفعال شد',
+      '系统动画已开启':'پویانمایی سیستم فعال شد','系统动画已关闭，界面更快':'پویانمایی سیستم غیرفعال شد؛ رابط سریع‌تر است',
+      '字体大小已调整':'اندازه قلم تغییر کرد','显示大小已调整':'اندازه نمایش تغییر کرد','音量已调整':'بلندی صدا تغییر کرد',
+      '优化失败，运行时可能未启动':'بهینه‌سازی ناموفق بود؛ شاید محیط اجرا فعال نیست',
+      '需要先打开一次应用，让运行时启动':'برای آغاز محیط اجرا، ابتدا یک برنامه را باز کنید',
+      '读取数据分区信息失败':'خواندن اطلاعات پارتیشن داده ناموفق بود','尚未创建':'هنوز ساخته نشده',
+      '统计不可用':'آمار در دسترس نیست','网络不可用':'شبکه در دسترس نیست','打开下载页':'باز کردن صفحه دانلود',
+      '更新失败':'به‌روزرسانی ناموفق بود','正在更新…':'در حال به‌روزرسانی…','检查中…':'در حال بررسی…',
+      '正在连接 GitHub…':'در حال اتصال به GitHub…','已是最新版本':'آخرین نسخه نصب است','检查失败':'بررسی ناموفق بود',
+      '更新中…':'در حال به‌روزرسانی…','资源策略已切换':'حالت مصرف منابع تغییر کرد','下一次打开应用生效':'از اجرای بعدی برنامه اعمال می‌شود',
+      '先选一个容量':'ابتدا ظرفیت را انتخاب کنید','开始扩容':'شروع افزایش ظرفیت','扩容中…':'در حال افزایش ظرفیت…',
+      '数据分区已扩容':'ظرفیت پارتیشن داده افزایش یافت','扩容失败':'افزایش ظرفیت ناموفق بود','已恢复系统组件':'اجزای سیستم بازیابی شدند',
+      '重启运行时后生效':'پس از راه‌اندازی مجدد محیط اجرا اعمال می‌شود','已切全屏':'حالت تمام‌صفحه فعال شد',
+      '已切竖屏窗口':'حالت پنجره عمودی فعال شد','画面大小已更新':'اندازه تصویر به‌روز شد',
+      '已补齐快捷方式':'میان‌برها بازسازی شدند','快捷方式都还在':'همه میان‌برها موجودند',
+      '桌面与开始菜单入口正常':'میان‌برهای دسکتاپ و منوی Start درست هستند','诊断报告已导出':'گزارش عیب‌یابی صادر شد',
+      '导出失败':'صدور گزارش ناموفق بود','已经是精简状态':'از قبل بهینه شده است','清理完成':'پاک‌سازی کامل شد',
+      '清理失败':'پاک‌سازی ناموفق بود','重置失败':'بازنشانی ناموفق بود','请重试':'دوباره تلاش کنید',
+      '安卓数据已重置':'داده‌های اندروید بازنشانی شد','开始修复':'شروع تعمیر','网络仍未恢复':'شبکه هنوز وصل نشده است',
+      '网络已恢复':'شبکه بازیابی شد','已联网':'متصل شد','修复失败':'تعمیر ناموفق بود','扫描失败':'اسکن ناموفق بود',
+      '安装完成':'نصب کامل شد','安装失败':'نصب ناموفق بود','已启动':'اجرا شد','启动失败':'اجرا ناموفق بود',
+      '已固定':'سنجاق شد','已取消固定':'سنجاق برداشته شد','正在打开':'در حال باز کردن','正在安装':'در حال نصب'
+    }
+  };
+  Object.assign(dictionaries.en, runtimeTranslations.en);
+  Object.assign(dictionaries.fa, runtimeTranslations.fa);
+
   const original = new WeakMap();
   function translateTextNode(node, lang) {
     const raw = node.nodeValue;
