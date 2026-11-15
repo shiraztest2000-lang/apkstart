@@ -34,7 +34,7 @@
       '保存并迁移':'Save and migrate','关联 .apk 文件':'Associate .apk files','卸载 ApkStart':'Uninstall ApkStart',
       '一键卸载':'Uninstall','安卓原生设置':'Native Android settings','显示设置':'Display settings',
       '声音设置':'Sound settings','语言设置':'Language settings','应用管理':'App management',
-      'English':'English','فارسی':'فارسی','中文':'中文','Language':'زبان','双击即装的 Windows 安卓应用启动器：APK 安装、桌面快捷方式、独立窗口运行、文件双向互通。':'اجراکننده برنامه‌های اندروید در ویندوز: نصب APK، ساخت میان‌بر دسکتاپ، اجرای مستقل برنامه‌ها و همگام‌سازی دوطرفه فایل‌ها.','Language':'Language','双击即装的 Windows 安卓应用启动器：APK 安装、桌面快捷方式、独立窗口运行、文件双向互通。':'A Windows Android app launcher: install APKs, create desktop shortcuts, run apps in separate windows, and sync files both ways.'
+      'English':'English','فارسی':'فارسی','中文':'中文','Language':'Language','双击即装的 Windows 安卓应用启动器：APK 安装、桌面快捷方式、独立窗口运行、文件双向互通。':'A Windows Android app launcher: install APKs, create desktop shortcuts, run apps in separate windows, and sync files both ways.'
     },
     fa: {
       '未连接运行时':'محیط اجرا متصل نیست','设置':'تنظیمات','搜索已安装应用':'جست‌وجوی برنامه‌های نصب‌شده',
@@ -63,7 +63,7 @@
       '保存并迁移':'ذخیره و انتقال','关联 .apk 文件':'اتصال فایل‌های ‎.apk‎','卸载 ApkStart':'حذف ApkStart',
       '一键卸载':'حذف با یک کلیک','安卓原生设置':'تنظیمات اصلی اندروید','显示设置':'تنظیمات نمایش',
       '声音设置':'تنظیمات صدا','语言设置':'تنظیمات زبان اندروید','应用管理':'مدیریت برنامه‌ها',
-      'English':'English','فارسی':'فارسی','中文':'中文'
+      'English':'English','فارسی':'فارسی','中文':'中文','Language':'زبان','双击即装的 Windows 安卓应用启动器：APK 安装、桌面快捷方式、独立窗口运行、文件双向互通。':'اجراکننده برنامه‌های اندروید در ویندوز: نصب APK، ساخت میان‌بر دسکتاپ، اجرای مستقل برنامه‌ها و همگام‌سازی دوطرفه فایل‌ها.'
     }
   };
 
