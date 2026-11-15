@@ -3,7 +3,7 @@ name: Repair release metadata and remove obsolete releases
 on:
   push:
     branches: [main]
-    paths: ['.github/release-notes-v0.4.3-en.md']
+    paths: ['.github/release-notes-v0.4.4.002.md']
 
 permissions:
   contents: write
@@ -13,16 +13,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Update v0.4.3 release notes and remove older releases
+      - name: Update v0.4.4.002 release notes and remove superseded releases
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         shell: bash
         run: |
           set -euo pipefail
-          gh release edit v0.4.3 --title "ApkStart v0.4.3" --notes-file .github/release-notes-v0.4.3-en.md
+          gh release edit v0.4.4.002 --title "ApkStart v0.4.4.002" --notes-file .github/release-notes-v0.4.4.002-en.md
           while IFS= read -r tag; do
             [ -z "$tag" ] && continue
-            if [ "$tag" != "v0.4.3" ]; then
+            if [ "$tag" != "v0.4.4.002" ]; then
               echo "Deleting obsolete release and tag: $tag"
               gh release delete "$tag" --yes --cleanup-tag
             fi
