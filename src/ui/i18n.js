@@ -998,7 +998,7 @@
       // Translate stable Chinese phrases inside dynamic strings (for example, counts and versions).
       let partial = source;
       const fragments = Object.keys(dictionary)
-        .filter((item) => item.length >= 3 && /[\\u4e00-\\u9fff]/.test(item))
+        .filter((item) => item.length >= 3 && /[\u4e00-\u9fff]/.test(item))
         .sort((a, b) => b.length - a.length);
       for (const item of fragments) {
         if (partial.includes(item)) partial = partial.split(item).join(dictionary[item]);
