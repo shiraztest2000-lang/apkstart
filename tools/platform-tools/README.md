@@ -1,18 +1,18 @@
-# 便携 adb
+# Portable adb
 
-把 Android platform-tools 解压到本目录（应出现 `adb.exe`），ApkStart 会优先使用它：
+Extract Android platform-tools into this directory (it should contain `adb.exe`). ApkStart will prefer this copy:
 
 ```
 tools/platform-tools/
 └─ adb.exe
 ```
 
-下载地址：https://developer.android.com/tools/releases/platform-tools
+Download: https://developer.android.com/tools/releases/platform-tools
 
-如果本目录为空，ApkStart 会依次尝试：
+If this directory is empty, ApkStart checks the following locations in order:
 
-1. 设置中手动指定的 adb 路径
-2. 本目录
+1. The adb path selected manually in Settings
+2. This directory
 3. `%LOCALAPPDATA%\Android\Sdk\platform-tools\adb.exe`
-4. 常见模拟器自带的 adb（LDPlayer / MuMu / BlueStacks）
-5. 系统 PATH
+4. adb bundled with common Android emulators (LDPlayer / MuMu / BlueStacks)
+5. The system PATH
