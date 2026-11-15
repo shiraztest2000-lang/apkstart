@@ -977,6 +977,55 @@
   Object.assign(dictionaries.en, helpTranslations.en);
   Object.assign(dictionaries.fa, helpTranslations.fa);
 
+  const guideTranslations = {
+  "en": {
+    "选到": "navigate to",
+    "，回车": " and press Enter",
+    "：选": " : select ",
+    "；询问是否使用 GPT 时选": " ; when asked whether to use GPT, select ",
+    "→ 容量直接回车 →": "→ press Enter for the default size →",
+    "→ 输入": "→ type ",
+    "如果之后提示 adb 未连接：在虚拟机窗口按": "If adb is not connected afterward: in the virtual machine window press ",
+    "adb 路径": "ADB path",
+    "本项目仓库已公开": "This project repository is public",
+    "Gitee 的发行版列表匿名就能读": "Gitee release listings can be read anonymously",
+    "留空也能用 Gitee 源": "leave this blank to use the Gitee source",
+    "只有在「Gitee 被限流（返回 403/429）」或你想读私有分支时才需要填：": "Only enter a token if Gitee rate-limits requests (403/429) or you need to read a private branch:",
+    "gitee.com → 设置 → 私人令牌，只勾「projects」即可": "On gitee.com, open Settings → Personal access tokens and select only “projects”",
+    "它只用于读取发行版列表": "It is used only to read release listings",
+    "不会上传任何东西。": "It does not upload anything.",
+    "真正吃盘的是这一块：数据分区": "Most disk usage comes from the data partition",
+    "快速启动快照（约 2–3 GB）": "quick-boot snapshot (about 2–3 GB)",
+    "磁盘紧张时把它指到另一个盘（如 D:），重启软件后生效": "If disk space is limited, move it to another drive (such as D:) and restart the app to apply the change",
+    "apkstart.avd": "apkstart.avd",
+    "可整体搬过去再删": "can be moved in its entirety before deleting the old copy"
+  },
+  "fa": {
+    "选到": "به آن بروید",
+    "，回车": " و Enter را فشار دهید",
+    "：选": ": انتخاب کنید ",
+    "；询问是否使用 GPT 时选": "؛ اگر درباره استفاده از GPT پرسیده شد، انتخاب کنید ",
+    "→ 容量直接回车 →": "→ برای اندازه پیش‌فرض Enter را فشار دهید →",
+    "→ 输入": "→ وارد کنید ",
+    "如果之后提示 adb 未连接：在虚拟机窗口按": "اگر بعداً پیام عدم اتصال adb نمایش داده شد، در پنجره ماشین مجازی فشار دهید ",
+    "adb 路径": "مسیر ADB",
+    "本项目仓库已公开": "مخزن این پروژه عمومی است",
+    "Gitee 的发行版列表匿名就能读": "فهرست انتشارهای Gitee بدون ورود قابل خواندن است",
+    "留空也能用 Gitee 源": "برای استفاده از منبع Gitee این قسمت را خالی بگذارید",
+    "只有在「Gitee 被限流（返回 403/429）」或你想读私有分支时才需要填：": "فقط اگر Gitee درخواست‌ها را محدود کرد (خطای 403/429) یا می‌خواهید شاخه خصوصی را بخوانید، توکن وارد کنید:",
+    "gitee.com → 设置 → 私人令牌，只勾「projects」即可": "در gitee.com به Settings → Personal Access Tokens بروید و فقط «projects» را انتخاب کنید",
+    "它只用于读取发行版列表": "این توکن فقط برای خواندن فهرست انتشارها استفاده می‌شود",
+    "不会上传任何东西。": "هیچ فایلی بارگذاری نمی‌کند.",
+    "真正吃盘的是这一块：数据分区": "بیشترین فضای دیسک را پارتیشن داده مصرف می‌کند",
+    "快速启动快照（约 2–3 GB）": "snapshot شروع سریع (حدود ۲ تا ۳ گیگابایت)",
+    "磁盘紧张时把它指到另一个盘（如 D:），重启软件后生效": "اگر فضای دیسک کم است، آن را به درایوی دیگر مانند D منتقل کنید؛ تغییر پس از راه‌اندازی مجدد برنامه اعمال می‌شود",
+    "apkstart.avd": "apkstart.avd",
+    "可整体搬过去再删": "را می‌توان کامل منتقل کرد و سپس نسخه قبلی را حذف کرد"
+  }
+};
+  Object.assign(dictionaries.en, guideTranslations.en);
+  Object.assign(dictionaries.fa, guideTranslations.fa);
+
   const original = new WeakMap();
   function translateTextNode(node, lang) {
     const raw = node.nodeValue;
