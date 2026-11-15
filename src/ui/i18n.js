@@ -1,0 +1,401 @@
+'use strict';
+
+/*
+ * Lightweight offline UI localization for ApkStart.
+ * Chinese remains the source language; English and Persian are selected locally
+ * and the preference is stored in localStorage.
+ */
+(() => {
+  const dictionaries = {
+    en: {
+      '未连接运行时':'Runtime disconnected','设置':'Settings','搜索已安装应用':'Search installed apps',
+      '安装 APK':'Install APK','把 APK 拖进来就能装':'Drop APK files here to install',
+      '安装完成后会自动生成桌面图标，双击即以独立窗口运行，和普通 Windows 软件一样。':'A desktop shortcut is created after installation. Double-click it to run the app in its own window, just like a regular Windows application.',
+      '已注册 .apk 关联时，在资源管理器里双击 APK 也会直接装到 ApkStart。':'When .apk file association is enabled, double-clicking an APK in File Explorer installs it directly into ApkStart.',
+      '选择 APK 文件':'Choose APK files','正在检查运行时…':'Checking runtime…','你好':'Hello',
+      'ApkStart 已就绪':'ApkStart is ready','下次启动不再自动弹出':'Do not show automatically next time',
+      '打开设置':'Open settings','开始使用':'Get started','松手开始安装':'Release to start installation',
+      '支持单个或多个 .apk 文件':'One or multiple .apk files supported','运行时与环境':'Runtime & Environment',
+      '运行状态':'Runtime status','正在检查…':'Checking…','一键完成':'Set up automatically',
+      '高级：连接已有运行时':'Advanced: connect an existing runtime','全自动：无需选择镜像、无需启用加速、无需调内存':'Fully automatic: no image selection, acceleration setup, or memory tuning required',
+      '安装 Android 到虚拟磁盘':'Install Android to the virtual disk','设置修改后立即生效':'Settings take effect immediately',
+      '完成':'Done','自动模式（默认，无需设置）':'Automatic mode (default)','本机自适应参数':'Adaptive system settings',
+      '正在检测…':'Detecting…','应用窗口':'App window','显示模式':'Display mode',
+      '竖屏窗口（可自由拉伸，记住每个应用的大小）':'Portrait window (resizable; remembers each app size)',
+      '全屏（铺满屏幕，保持手机比例两侧留黑）':'Fullscreen (fills the screen while preserving phone aspect ratio)',
+      '竖屏画面大小':'Portrait resolution','鼠标键位':'Mouse controls','左键 · 确认 / 点击':'Left button · Confirm / Click',
+      '右键 · 安卓返回':'Right button · Android Back','滚轮 · 滑动':'Wheel · Scroll',
+      '性能与资源占用':'Performance & Resources','资源策略':'Resource profile','下载与更新源':'Downloads & Update Sources',
+      '更新与下载源':'Update source','关于':'About','软件更新':'Software update','检查更新':'Check for updates',
+      '立即更新':'Update now','当前版本':'Current version','文件互通':'File sharing','系统集成':'System integration',
+      '桌面与应用':'Desktop & Apps','安装后自动创建桌面快捷方式':'Create desktop shortcuts after installation',
+      '同时添加到开始菜单':'Also add to Start menu','快捷方式目录':'Shortcut directory','本机共享目录':'Local shared folder',
+      '安卓内对应目录':'Matching Android directory','浏览':'Browse','打开':'Open','立即同步':'Sync now',
+      '保存并迁移':'Save and migrate','关联 .apk 文件':'Associate .apk files','卸载 ApkStart':'Uninstall ApkStart',
+      '一键卸载':'Uninstall','安卓原生设置':'Native Android settings','显示设置':'Display settings',
+      '声音设置':'Sound settings','语言设置':'Language settings','应用管理':'App management',
+      'English':'English','فارسی':'فارسی','中文':'中文','Language':'Language','双击即装的 Windows 安卓应用启动器：APK 安装、桌面快捷方式、独立窗口运行、文件双向互通。':'A Windows Android app launcher: install APKs, create desktop shortcuts, run apps in separate windows, and sync files both ways.'
+    },
+    fa: {
+      '未连接运行时':'محیط اجرا متصل نیست','设置':'تنظیمات','搜索已安装应用':'جست‌وجوی برنامه‌های نصب‌شده',
+      '安装 APK':'نصب APK','把 APK 拖进来就能装':'برای نصب، فایل APK را اینجا رها کنید',
+      '安装完成后会自动生成桌面图标，双击即以独立窗口运行，和普通 Windows 软件一样。':'پس از نصب، میان‌بر برنامه روی دسکتاپ ساخته می‌شود. با دوبار کلیک، برنامه در پنجره‌ای مستقل اجرا خواهد شد.',
+      '已注册 .apk 关联时，在资源管理器里双击 APK 也会直接装到 ApkStart。':'اگر پسوند ‎.apk‎ به برنامه متصل باشد، با دوبار کلیک روی فایل در File Explorer مستقیماً در ApkStart نصب می‌شود.',
+      '选择 APK 文件':'انتخاب فایل APK','正在检查运行时…':'در حال بررسی محیط اجرا…','你好':'سلام',
+      'ApkStart 已就绪':'ApkStart آماده است','下次启动不再自动弹出':'دفعه بعد به‌صورت خودکار نمایش داده نشود',
+      '打开设置':'باز کردن تنظیمات','开始使用':'شروع','松手开始安装':'برای شروع نصب رها کنید',
+      '支持单个或多个 .apk 文件':'پشتیبانی از یک یا چند فایل ‎.apk‎','运行时与环境':'محیط اجرا و تنظیمات',
+      '运行状态':'وضعیت اجرا','正在检查…':'در حال بررسی…','一键完成':'راه‌اندازی خودکار',
+      '高级：连接已有运行时':'پیشرفته: اتصال به محیط اجرای موجود','全自动：无需选择镜像、无需启用加速、无需调内存':'کاملاً خودکار؛ نیازی به انتخاب ایمیج، فعال‌سازی شتاب‌دهنده یا تنظیم حافظه نیست',
+      '安装 Android 到虚拟磁盘':'نصب اندروید روی دیسک مجازی','设置修改后立即生效':'تغییرات تنظیمات بلافاصله اعمال می‌شوند',
+      '完成':'انجام شد','自动模式（默认，无需设置）':'حالت خودکار (پیش‌فرض)','本机自适应参数':'تنظیمات سازگار با سیستم',
+      '正在检测…':'در حال شناسایی…','应用窗口':'پنجره برنامه','显示模式':'حالت نمایش',
+      '竖屏窗口（可自由拉伸，记住每个应用的大小）':'پنجره عمودی (با قابلیت تغییر اندازه و ذخیره اندازه هر برنامه)',
+      '全屏（铺满屏幕，保持手机比例两侧留黑）':'تمام‌صفحه (با حفظ نسبت تصویر گوشی)',
+      '竖屏画面大小':'اندازه تصویر عمودی','鼠标键位':'تنظیمات ماوس','左键 · 确认 / 点击':'کلیک چپ · تأیید / کلیک',
+      '右键 · 安卓返回':'کلیک راست · بازگشت اندروید','滚轮 · 滑动':'چرخ ماوس · پیمایش',
+      '性能与资源占用':'عملکرد و مصرف منابع','资源策略':'حالت مصرف منابع','下载与更新源':'منابع دانلود و به‌روزرسانی',
+      '更新与下载源':'منبع به‌روزرسانی','关于':'درباره','软件更新':'به‌روزرسانی نرم‌افزار','检查更新':'بررسی به‌روزرسانی',
+      '立即更新':'به‌روزرسانی اکنون','当前版本':'نسخه فعلی','文件互通':'اشتراک‌گذاری فایل','系统集成':'یکپارچه‌سازی سیستم',
+      '桌面与应用':'دسکتاپ و برنامه‌ها','安装后自动创建桌面快捷方式':'ساخت خودکار میان‌بر دسکتاپ پس از نصب',
+      '同时添加到开始菜单':'افزودن به منوی Start','快捷方式目录':'مسیر میان‌برها','本机共享目录':'پوشه اشتراکی رایانه',
+      '安卓内对应目录':'پوشه متناظر در اندروید','浏览':'مرور','打开':'باز کردن','立即同步':'همگام‌سازی',
+      '保存并迁移':'ذخیره و انتقال','关联 .apk 文件':'اتصال فایل‌های ‎.apk‎','卸载 ApkStart':'حذف ApkStart',
+      '一键卸载':'حذف با یک کلیک','安卓原生设置':'تنظیمات اصلی اندروید','显示设置':'تنظیمات نمایش',
+      '声音设置':'تنظیمات صدا','语言设置':'تنظیمات زبان اندروید','应用管理':'مدیریت برنامه‌ها',
+      'English':'English','فارسی':'فارسی','中文':'中文','Language':'زبان','双击即装的 Windows 安卓应用启动器：APK 安装、桌面快捷方式、独立窗口运行、文件双向互通。':'اجراکننده برنامه‌های اندروید در ویندوز: نصب APK، ساخت میان‌بر دسکتاپ، اجرای مستقل برنامه‌ها و همگام‌سازی دوطرفه فایل‌ها.'
+    }
+  };
+
+
+  const runtimeTranslations = {
+    en: {
+      '正在运行':'Running','运行中':'Running','切换到前台':'Bring to front','暂无应用':'No apps yet',
+      '运行时未部署 —— 打开设置 → 运行时，一键完成':'Runtime not deployed — open Settings → Runtime and select Set up automatically',
+      '需要部署':'Deployment required','引导中':'Guided setup','软件模拟':'Software rendering',
+      '待下载镜像':'Image download pending','运行时引擎未安装 —— 打开设置 → 运行时一键完成':'Runtime engine not installed — open Settings and complete automatic setup',
+      '运行时已就绪 —— 安装 APK 或双击桌面图标会自动开机':'Runtime ready — install an APK or double-click a desktop shortcut to start',
+      '待开机':'Not started','安装中':'Installing','待安装':'Waiting for installation','一切就绪':'All ready',
+      '准备中…':'Preparing…','准备失败':'Setup failed','请检查网络后重试':'Check your network and try again',
+      '运行时已就绪':'Runtime ready','开机未完成':'Startup incomplete','未知错误':'Unknown error',
+      '已有安装任务在进行':'An installation is already in progress','请等当前应用装完再继续。':'Wait for the current app to finish installing.',
+      '桌面快捷方式已创建，双击即可直接打开。':'Desktop shortcut created. Double-click to open.',
+      '创建快捷方式失败':'Failed to create shortcut','已卸载':'Uninstalled','卸载失败':'Uninstall failed',
+      '打开应用':'Open app','创建桌面快捷方式':'Create desktop shortcut','固定到顶部':'Pin to top',
+      '打开 APK 所在位置':'Open APK location','清除应用数据':'Clear app data','取消固定':'Unpin',
+      '数据已清除':'App data cleared','清除失败':'Failed to clear data','读取中…':'Reading…',
+      '运行时未启动':'Runtime is not running','Wi-Fi 已开':'Wi-Fi on','Wi-Fi 已关':'Wi-Fi off',
+      '已生效':'Applied','运行时未就绪':'Runtime not ready','Wi-Fi 已开启':'Wi-Fi enabled',
+      'Wi-Fi 已关闭':'Wi-Fi disabled','已进入飞行模式':'Airplane mode enabled','已退出飞行模式':'Airplane mode disabled',
+      '系统动画已开启':'System animations enabled','系统动画已关闭，界面更快':'System animations disabled for a faster interface',
+      '字体大小已调整':'Font size updated','显示大小已调整':'Display size updated','音量已调整':'Volume updated',
+      '优化失败，运行时可能未启动':'Optimization failed; the runtime may not be running',
+      '需要先打开一次应用，让运行时启动':'Open an app once to start the runtime',
+      '读取数据分区信息失败':'Failed to read data partition information','尚未创建':'Not created',
+      '统计不可用':'Statistics unavailable','网络不可用':'Network unavailable','打开下载页':'Open download page',
+      '立即更新':'Update now','更新失败':'Update failed','正在更新…':'Updating…','检查中…':'Checking…',
+      '正在连接 GitHub…':'Connecting to GitHub…','已是最新版本':'Already up to date','检查失败':'Check failed',
+      '更新中…':'Updating…','资源策略已切换':'Resource profile changed','下一次打开应用生效':'Takes effect next time you open an app',
+      '先选一个容量':'Choose a capacity first','开始扩容':'Start expanding','扩容中…':'Expanding…',
+      '数据分区已扩容':'Data partition expanded','扩容失败':'Expansion failed','已恢复系统组件':'System components restored',
+      '重启运行时后生效':'Takes effect after restarting the runtime','已切全屏':'Switched to fullscreen',
+      '已切竖屏窗口':'Switched to portrait window','画面大小已更新':'Display size updated',
+      '已补齐快捷方式':'Shortcuts recreated','快捷方式都还在':'All shortcuts are present',
+      '桌面与开始菜单入口正常':'Desktop and Start menu shortcuts are OK','诊断报告已导出':'Diagnostic report exported',
+      '导出失败':'Export failed','已经是精简状态':'Already optimized','清理完成':'Cleanup complete',
+      '清理失败':'Cleanup failed','重置失败':'Reset failed','请重试':'Please try again',
+      '安卓数据已重置':'Android data reset','开始修复':'Start repair','网络仍未恢复':'Network not restored',
+      '网络已恢复':'Network restored','已联网':'Connected','修复失败':'Repair failed','扫描失败':'Scan failed',
+      '安装完成':'Installation complete','安装失败':'Installation failed','已启动':'Launched','启动失败':'Launch failed',
+      '已固定':'Pinned','已取消固定':'Unpinned','正在打开':'Opening','正在安装':'Installing'
+    },
+    fa: {
+      '正在运行':'در حال اجرا','运行中':'در حال اجرا','切换到前台':'انتقال به پنجره فعال','暂无应用':'هنوز برنامه‌ای وجود ندارد',
+      '运行时未部署 —— 打开设置 → 运行时，一键完成':'محیط اجرا نصب نشده است؛ از تنظیمات ← محیط اجرا، راه‌اندازی خودکار را اجرا کنید',
+      '需要部署':'نیازمند راه‌اندازی','引导中':'در حال راهنمایی','软件模拟':'پردازش نرم‌افزاری',
+      '待下载镜像':'در انتظار دانلود ایمیج','运行时引擎未安装 —— 打开设置 → 运行时一键完成':'موتور اجرا نصب نیست؛ از تنظیمات، راه‌اندازی خودکار را انجام دهید',
+      '运行时已就绪 —— 安装 APK 或双击桌面图标会自动开机':'محیط اجرا آماده است؛ با نصب APK یا دوبار کلیک روی میان‌بر، اجرا آغاز می‌شود',
+      '待开机':'در انتظار شروع','安装中':'در حال نصب','待安装':'در انتظار نصب','一切就绪':'همه‌چیز آماده است',
+      '准备中…':'در حال آماده‌سازی…','准备失败':'آماده‌سازی ناموفق بود','请检查网络后重试':'اتصال اینترنت را بررسی و دوباره تلاش کنید',
+      '运行时已就绪':'محیط اجرا آماده است','开机未完成':'راه‌اندازی کامل نشد','未知错误':'خطای نامشخص',
+      '已有安装任务在进行':'یک فرایند نصب دیگر در حال انجام است','请等当前应用装完再继续。':'تا پایان نصب برنامه فعلی صبر کنید.',
+      '桌面快捷方式已创建，双击即可直接打开。':'میان‌بر دسکتاپ ساخته شد؛ برای اجرا دوبار کلیک کنید.',
+      '创建快捷方式失败':'ساخت میان‌بر ناموفق بود','已卸载':'حذف شد','卸载失败':'حذف ناموفق بود',
+      '打开应用':'باز کردن برنامه','创建桌面快捷方式':'ساخت میان‌بر دسکتاپ','固定到顶部':'سنجاق‌کردن در بالا',
+      '打开 APK 所在位置':'باز کردن محل فایل APK','清除应用数据':'پاک‌کردن داده‌های برنامه','取消固定':'برداشتن سنجاق',
+      '数据已清除':'داده‌های برنامه پاک شد','清除失败':'پاک‌سازی ناموفق بود','读取中…':'در حال خواندن…',
+      '运行时未启动':'محیط اجرا آغاز نشده است','Wi-Fi 已开':'وای‌فای روشن است','Wi-Fi 已关':'وای‌فای خاموش است',
+      '已生效':'اعمال شد','运行时未就绪':'محیط اجرا آماده نیست','Wi-Fi 已开启':'وای‌فای فعال شد',
+      'Wi-Fi 已关闭':'وای‌فای غیرفعال شد','已进入飞行模式':'حالت پرواز فعال شد','已退出飞行模式':'حالت پرواز غیرفعال شد',
+      '系统动画已开启':'پویانمایی سیستم فعال شد','系统动画已关闭，界面更快':'پویانمایی سیستم غیرفعال شد؛ رابط سریع‌تر است',
+      '字体大小已调整':'اندازه قلم تغییر کرد','显示大小已调整':'اندازه نمایش تغییر کرد','音量已调整':'بلندی صدا تغییر کرد',
+      '优化失败，运行时可能未启动':'بهینه‌سازی ناموفق بود؛ شاید محیط اجرا فعال نیست',
+      '需要先打开一次应用，让运行时启动':'برای آغاز محیط اجرا، ابتدا یک برنامه را باز کنید',
+      '读取数据分区信息失败':'خواندن اطلاعات پارتیشن داده ناموفق بود','尚未创建':'هنوز ساخته نشده',
+      '统计不可用':'آمار در دسترس نیست','网络不可用':'شبکه در دسترس نیست','打开下载页':'باز کردن صفحه دانلود',
+      '更新失败':'به‌روزرسانی ناموفق بود','正在更新…':'در حال به‌روزرسانی…','检查中…':'در حال بررسی…',
+      '正在连接 GitHub…':'در حال اتصال به GitHub…','已是最新版本':'آخرین نسخه نصب است','检查失败':'بررسی ناموفق بود',
+      '更新中…':'در حال به‌روزرسانی…','资源策略已切换':'حالت مصرف منابع تغییر کرد','下一次打开应用生效':'از اجرای بعدی برنامه اعمال می‌شود',
+      '先选一个容量':'ابتدا ظرفیت را انتخاب کنید','开始扩容':'شروع افزایش ظرفیت','扩容中…':'در حال افزایش ظرفیت…',
+      '数据分区已扩容':'ظرفیت پارتیشن داده افزایش یافت','扩容失败':'افزایش ظرفیت ناموفق بود','已恢复系统组件':'اجزای سیستم بازیابی شدند',
+      '重启运行时后生效':'پس از راه‌اندازی مجدد محیط اجرا اعمال می‌شود','已切全屏':'حالت تمام‌صفحه فعال شد',
+      '已切竖屏窗口':'حالت پنجره عمودی فعال شد','画面大小已更新':'اندازه تصویر به‌روز شد',
+      '已补齐快捷方式':'میان‌برها بازسازی شدند','快捷方式都还在':'همه میان‌برها موجودند',
+      '桌面与开始菜单入口正常':'میان‌برهای دسکتاپ و منوی Start درست هستند','诊断报告已导出':'گزارش عیب‌یابی صادر شد',
+      '导出失败':'صدور گزارش ناموفق بود','已经是精简状态':'از قبل بهینه شده است','清理完成':'پاک‌سازی کامل شد',
+      '清理失败':'پاک‌سازی ناموفق بود','重置失败':'بازنشانی ناموفق بود','请重试':'دوباره تلاش کنید',
+      '安卓数据已重置':'داده‌های اندروید بازنشانی شد','开始修复':'شروع تعمیر','网络仍未恢复':'شبکه هنوز وصل نشده است',
+      '网络已恢复':'شبکه بازیابی شد','已联网':'متصل شد','修复失败':'تعمیر ناموفق بود','扫描失败':'اسکن ناموفق بود',
+      '安装完成':'نصب کامل شد','安装失败':'نصب ناموفق بود','已启动':'اجرا شد','启动失败':'اجرا ناموفق بود',
+      '已固定':'سنجاق شد','已取消固定':'سنجاق برداشته شد','正在打开':'در حال باز کردن','正在安装':'در حال نصب'
+    }
+  };
+
+  const settingsTranslations = {
+    en: {
+      '磁盘总占用（运行时 + 安卓数据 + 缓存）':'Total disk usage (runtime + Android data + cache)',
+      '安卓系统设置（不用进安卓桌面）':'Android system settings (no need to open the Android desktop)',
+      '媒体音量':'Media volume','字体大小':'Font size','画质（安卓内部渲染分辨率）':'Graphics quality (Android rendering resolution)',
+      '虚拟机优先级':'Virtual machine priority','引擎模式':'Engine mode','设备地址':'Device address',
+      '运行时数据目录（系统镜像 · 已装应用 · 快照）':'Runtime data directory (system image · installed apps · snapshots)',
+      '安卓数据目录（应用、游戏与快速启动快照）':'Android data directory (apps, games, and quick-boot snapshots)',
+      '默认：C 盘用户数据目录':'Default: user data directory on drive C:',
+      '默认：运行时目录下的 avd 文件夹':'Default: avd folder inside the runtime directory',
+      '两侧目录会持续双向同步；在安卓应用里保存到该目录的文件，会出现在本机共享目录中。':'The two folders stay synchronized in both directions. Files saved there by Android apps appear in the shared folder on this PC.',
+      '留空即可：公开仓库匿名也能读':'Leave blank: public repositories can be accessed anonymously',
+      '留空 = 桌面':'Leave blank = Desktop','微信公众号二维码':'WeChat public account QR code','抖音二维码':'Douyin QR code',
+      '扫码关注公众号':'Scan to follow the public account','抖音 · 日常MIKU':'Douyin · RoutineMIKU',
+      '扫描并清掉旧版本留下的程序目录、失效的卸载项和更新临时文件':'Scan for and remove old program folders, stale uninstall entries, and update temporary files',
+      '安卓虚拟机没有网络时（应用里联网页面一直黑屏/转圈），用这个把安卓数据重置掉来修网络。应用清单会保留，点开应用会自动重装':'If Android has no network (online pages stay blank or keep loading), reset Android data to repair networking. The app list is retained and apps are reinstalled when opened.',
+      '清空安卓 /data 用户数据 + 已装应用 + 快速启动快照，还原成刚装好系统的干净状态':'Clear Android /data user data, installed apps, and quick-boot snapshots to restore a clean system state.',
+      '虚拟机窗口已打开。按下面 6 步操作一次，之后 ApkStart 会直接从磁盘启动，不再需要镜像。':'The virtual machine window is open. Complete these six steps once; ApkStart will then boot directly from disk without needing the image again.',
+      '自动模式（默认，无需设置）':'Automatic mode (default; no setup required)','本机自适应参数':'Adaptive settings for this PC',
+      '更新与下载源':'Update and download sources','安卓数据目录已更新':'Android data directory updated',
+      '软件更新':'Software updates','关于':'About','运行时与环境':'Runtime and environment','运行时':'Runtime',
+      '文件互通':'File sharing','系统集成':'System integration','桌面与应用':'Desktop and apps',
+      '显示模式':'Display mode','竖屏画面大小':'Portrait display size','鼠标键位':'Mouse controls',
+      '性能与资源占用':'Performance and resource usage','资源策略':'Resource profile','下载与更新源':'Download and update sources',
+      '设置修改后立即生效':'Settings take effect immediately','完成':'Done','卸载 ApkStart':'Uninstall ApkStart',
+      '安卓原生设置':'Native Android settings','显示设置':'Display settings','声音设置':'Sound settings',
+      '语言设置':'Android language settings','应用管理':'App management'
+    },
+    fa: {
+      '磁盘总占用（运行时 + 安卓数据 + 缓存）':'مجموع فضای اشغال‌شده دیسک (محیط اجرا + داده‌های اندروید + حافظه نهان)',
+      '安卓系统设置（不用进安卓桌面）':'تنظیمات سیستم اندروید (بدون نیاز به ورود به دسکتاپ اندروید)',
+      '媒体音量':'بلندی صدای رسانه','字体大小':'اندازه قلم','画质（安卓内部渲染分辨率）':'کیفیت تصویر (وضوح رندر داخلی اندروید)',
+      '虚拟机优先级':'اولویت ماشین مجازی','引擎模式':'حالت موتور اجرا','设备地址':'نشانی دستگاه',
+      '运行时数据目录（系统镜像 · 已装应用 · 快照）':'مسیر داده‌های محیط اجرا (تصویر سیستم، برنامه‌های نصب‌شده و snapshotها)',
+      '安卓数据目录（应用、游戏与快速启动快照）':'مسیر داده‌های اندروید (برنامه‌ها، بازی‌ها و snapshotهای شروع سریع)',
+      '默认：C 盘用户数据目录':'پیش‌فرض: پوشه داده‌های کاربر در درایو C',
+      '默认：运行时目录下的 avd 文件夹':'پیش‌فرض: پوشه avd در مسیر محیط اجرا',
+      '两侧目录会持续双向同步；在安卓应用里保存到该目录的文件，会出现在本机共享目录中。':'دو پوشه به‌صورت پیوسته و دوطرفه همگام می‌شوند. فایل‌هایی که برنامه‌های اندروید در این مسیر ذخیره کنند، در پوشه اشتراکی رایانه دیده خواهند شد.',
+      '留空即可：公开仓库匿名也能读':'خالی بگذارید؛ مخزن‌های عمومی بدون ورود نیز قابل‌خواندن هستند',
+      '留空 = 桌面':'خالی = دسکتاپ','微信公众号二维码':'کد QR حساب عمومی وی‌چت','抖音二维码':'کد QR دویین',
+      '扫码关注公众号':'برای دنبال‌کردن حساب، کد را اسکن کنید','抖音 · 日常MIKU':'دویین · RoutineMIKU',
+      '扫描并清掉旧版本留下的程序目录、失效的卸载项和更新临时文件':'پوشه‌های برنامه باقی‌مانده از نسخه‌های قدیمی، ورودی‌های حذف نامعتبر و فایل‌های موقت به‌روزرسانی را پیدا و پاک کنید',
+      '安卓虚拟机没有网络时（应用里联网页面一直黑屏/转圈），用这个把安卓数据重置掉来修网络。应用清单会保留，点开应用会自动重装':'اگر ماشین مجازی اندروید اینترنت ندارد و صفحات آنلاین برنامه‌ها خالی می‌مانند یا مدام بارگذاری می‌شوند، داده‌های اندروید را برای تعمیر شبکه بازنشانی کنید. فهرست برنامه‌ها حفظ می‌شود و با بازکردن هر برنامه دوباره نصب خواهد شد.',
+      '清空安卓 /data 用户数据 + 已装应用 + 快速启动快照，还原成刚装好系统的干净状态':'داده‌های کاربر در ‎/data‎، برنامه‌های نصب‌شده و snapshotهای شروع سریع را پاک می‌کند و سیستم را به وضعیت تمیز پس از نصب بازمی‌گرداند.',
+      '虚拟机窗口已打开。按下面 6 步操作一次，之后 ApkStart 会直接从磁盘启动，不再需要镜像。':'پنجره ماشین مجازی باز است. این شش مرحله را یک‌بار انجام دهید؛ پس از آن ApkStart مستقیماً از دیسک راه‌اندازی می‌شود و دیگر به فایل ایمیج نیاز ندارد.',
+      '自动模式（默认，无需设置）':'حالت خودکار (پیش‌فرض؛ بدون نیاز به تنظیم)','本机自适应参数':'تنظیمات سازگار با این رایانه',
+      '更新与下载源':'منابع به‌روزرسانی و دانلود','安卓数据目录已更新':'مسیر داده‌های اندروید به‌روز شد',
+      '软件更新':'به‌روزرسانی نرم‌افزار','关于':'درباره','运行时与环境':'محیط اجرا و تنظیمات','运行时':'محیط اجرا',
+      '文件互通':'اشتراک‌گذاری فایل','系统集成':'یکپارچه‌سازی سیستم','桌面与应用':'دسکتاپ و برنامه‌ها',
+      '显示模式':'حالت نمایش','竖屏画面大小':'اندازه تصویر عمودی','鼠标键位':'تنظیمات ماوس',
+      '性能与资源占用':'عملکرد و مصرف منابع','资源策略':'حالت مصرف منابع','下载与更新源':'منابع دانلود و به‌روزرسانی',
+      '设置修改后立即生效':'تغییرات تنظیمات بلافاصله اعمال می‌شوند','完成':'انجام شد','卸载 ApkStart':'حذف ApkStart',
+      '安卓原生设置':'تنظیمات اصلی اندروید','显示设置':'تنظیمات نمایش','声音设置':'تنظیمات صدا',
+      '语言设置':'تنظیمات زبان اندروید','应用管理':'مدیریت برنامه‌ها'
+    }
+  };
+
+  const extraTranslations = {
+    en: {
+      '启动菜单':'Start menu','我已安装完成':'I have finished installing','稍后再说':'Not now',
+      '正在统计…':'Calculating…','清理可回收文件':'Clean up reclaimable files','清理旧版本残留':'Clean up old-version leftovers',
+      '修复网络':'Repair network','重置安卓数据':'Reset Android data','导出诊断报告':'Export diagnostic report',
+      '重建快捷方式':'Rebuild shortcuts','开机自动启动（默认开启）':'Start automatically with Windows (enabled by default)',
+      '随 Windows 登录常驻托盘，双击桌面图标秒开应用，无需手动启动。':'Stay in the system tray after Windows sign-in; open apps from desktop shortcuts without starting ApkStart manually.',
+      '标准':'Standard','特大':'Extra large','显示大小':'Display size','安卓声音':'Android audio',
+      '飞行模式':'Airplane mode','系统动画':'System animations','轻量容器':'Lightweight container',
+      '容器细节（高级）':'Container details (advanced)','高级参数（一般无需修改）':'Advanced options (usually no changes needed)',
+      '自带运行时（推荐，QEMU + Android-x86，无第三方依赖）':'Built-in runtime (recommended; QEMU + Android-x86; no third-party dependencies)',
+      '连接已有运行时（高级：复用 WSA / 其他模拟器的 adb 端口）':'Connect to an existing runtime (advanced: reuse WSA or another emulator adb port)',
+      '系统镜像（ISO）':'System image (ISO)','内存 (MB，0 = 自动)':'Memory (MB, 0 = automatic)',
+      'CPU 核心（0 = 自动）':'CPU cores (0 = automatic)','空闲回收（分钟，0 = 不回收）':'Idle cleanup (minutes, 0 = disabled)',
+      '通用兼容镜像（自动管理）':'Universal compatibility image (managed automatically)','兼容镜像':'Compatibility image',
+      '未下载':'Not downloaded','下载兼容镜像':'Download compatibility image','启动运行时':'Start runtime',
+      '停止内置虚拟机':'Stop built-in virtual machine','刷新':'Refresh','一键流畅优化':'One-click performance optimization',
+      '立即扩容':'Expand now','自动':'Automatic','网络加速（推荐）':'Network acceleration (recommended)',
+      '保留快速启动快照（推荐）':'Keep quick-boot snapshot (recommended)','深度裁剪系统后台':'Deep-trim background system services',
+      '开机预热（推荐）':'Prewarm at startup (recommended)','自动选择较快的源（推荐）':'Automatically choose the fastest source (recommended)',
+      '只用 Gitee（国内通常最快）':'Use Gitee only (usually fastest in China)','只用 GitHub':'Use GitHub only',
+      '自动尝试公共加速镜像':'Try public acceleration mirrors automatically','下载镜像前缀（可选，加速 GitHub）':'Download mirror prefix (optional; accelerate GitHub)',
+      '下载线程数（1–16，默认 8）':'Download threads (1–16; default 8)','Gitee 更新源（可选）':'Gitee update source (optional)',
+      'Gitee 只读 token（一般不用填）':'Gitee read-only token (usually not required)','探测':'Detect',
+      '一键流畅优化':'One-click performance optimization','关闭系统动画、放开后台进程上限并把当前应用加入电池白名单，低配电脑体感最明显。':'Disable system animations, relax background process limits, and add the current app to the battery whitelist. Most noticeable on low-end PCs.',
+      '立即扩容':'Expand now','数据分区已扩容':'Data partition expanded','系统镜像':'System image',
+      '运行时数据目录（系统镜像 · 已装应用 · 快照）':'Runtime data directory (system image, installed apps, snapshots)',
+      '安卓数据目录（应用、游戏与快速启动快照）':'Android data directory (apps, games, and quick-boot snapshots)',
+      '本机共享目录':'Local shared folder','安卓内对应目录':'Matching Android directory',
+      '快捷方式目录':'Shortcut directory','关联 .apk 文件':'Associate .apk files',
+      '安卓系统设置（不用进安卓桌面）':'Android system settings (without opening the Android desktop)',
+      '媒体音量':'Media volume','字体大小':'Font size','画质（安卓内部渲染分辨率）':'Graphics quality (internal Android render resolution)',
+      '虚拟机优先级':'Virtual machine priority','引擎模式':'Engine mode','设备地址':'Device address',
+      '自动模式（默认，无需设置）':'Automatic mode (default; no setup required)','本机自适应参数':'Adaptive settings for this PC',
+      '更新与下载源':'Update and download sources','软件更新':'Software updates','关于':'About',
+      '文件互通':'File sharing','系统集成':'System integration','桌面与应用':'Desktop and apps',
+      '显示模式':'Display mode','竖屏画面大小':'Portrait display size','鼠标键位':'Mouse controls',
+      '性能与资源占用':'Performance and resource usage','资源策略':'Resource profile','下载与更新源':'Download and update sources',
+      '设置修改后立即生效':'Settings take effect immediately','完成':'Done','卸载 ApkStart':'Uninstall ApkStart',
+      '安卓原生设置':'Native Android settings','显示设置':'Display settings','声音设置':'Sound settings',
+      '语言设置':'Android language settings','应用管理':'App management'
+    },
+    fa: {
+      '启动菜单':'منوی شروع','我已安装完成':'نصب را کامل کردم','稍后再说':'بعداً',
+      '正在统计…':'در حال محاسبه…','清理可回收文件':'پاک‌سازی فایل‌های قابل‌بازیابی','清理旧版本残留':'پاک‌سازی باقی‌مانده نسخه‌های قبلی',
+      '修复网络':'تعمیر شبکه','重置安卓数据':'بازنشانی داده‌های اندروید','导出诊断报告':'خروجی گرفتن از گزارش عیب‌یابی',
+      '重建快捷方式':'بازسازی میان‌برها','开机自动启动（默认开启）':'اجرای خودکار هنگام روشن‌شدن ویندوز (به‌صورت پیش‌فرض فعال)',
+      '随 Windows 登录常驻托盘，双击桌面图标秒开应用，无需手动启动。':'پس از ورود به ویندوز در System Tray فعال می‌ماند؛ با دوبار کلیک روی میان‌بر دسکتاپ، برنامه بدون اجرای دستی ApkStart باز می‌شود.',
+      '标准':'استاندارد','特大':'بسیار بزرگ','显示大小':'اندازه نمایش','安卓声音':'صدای اندروید',
+      '飞行模式':'حالت پرواز','系统动画':'پویانمایی‌های سیستم','轻量容器':'کانتینر سبک',
+      '容器细节（高级）':'جزئیات کانتینر (پیشرفته)','高级参数（一般无需修改）':'تنظیمات پیشرفته (معمولاً نیازی به تغییر نیست)',
+      '自带运行时（推荐，QEMU + Android-x86，无第三方依赖）':'محیط اجرای داخلی (پیشنهادی؛ QEMU + Android-x86؛ بدون وابستگی جانبی)',
+      '连接已有运行时（高级：复用 WSA / 其他模拟器的 adb 端口）':'اتصال به محیط اجرای موجود (پیشرفته: استفاده از پورت adb در WSA یا شبیه‌ساز دیگر)',
+      '系统镜像（ISO）':'ایمیج سیستم (ISO)','内存 (MB，0 = 自动)':'حافظه (مگابایت؛ ۰ = خودکار)',
+      'CPU 核心（0 = 自动）':'هسته‌های CPU (۰ = خودکار)','空闲回收（分钟，0 = 不回收）':'پاک‌سازی در حالت بیکاری (دقیقه؛ ۰ = غیرفعال)',
+      '通用兼容镜像（自动管理）':'ایمیج سازگاری عمومی (مدیریت خودکار)','兼容镜像':'ایمیج سازگاری',
+      '未下载':'دانلود نشده','下载兼容镜像':'دانلود ایمیج سازگاری','启动运行时':'راه‌اندازی محیط اجرا',
+      '停止内置虚拟机':'توقف ماشین مجازی داخلی','刷新':'تازه‌سازی','一键流畅优化':'بهینه‌سازی عملکرد با یک کلیک',
+      '立即扩容':'افزایش ظرفیت اکنون','自动':'خودکار','网络加速（推荐）':'شتاب‌دهی شبکه (پیشنهادی)',
+      '保留快速启动快照（推荐）':'نگه‌داشت snapshot شروع سریع (پیشنهادی)','深度裁剪系统后台':'کاهش عمیق سرویس‌های پس‌زمینه سیستم',
+      '开机预热（推荐）':'آماده‌سازی اولیه هنگام اجرا (پیشنهادی)','自动选择较快的源（推荐）':'انتخاب خودکار سریع‌ترین منبع (پیشنهادی)',
+      '只用 Gitee（国内通常最快）':'فقط استفاده از Gitee (معمولاً سریع‌تر در چین)','只用 GitHub':'فقط استفاده از GitHub',
+      '自动尝试公共加速镜像':'امتحان خودکار آینه‌های عمومی شتاب‌دهنده','下载镜像前缀（可选，加速 GitHub）':'پیشوند آینه دانلود (اختیاری؛ برای افزایش سرعت GitHub)',
+      '下载线程数（1–16，默认 8）':'تعداد رشته‌های دانلود (۱ تا ۱۶؛ پیش‌فرض ۸)','Gitee 更新源（可选）':'منبع به‌روزرسانی Gitee (اختیاری)',
+      'Gitee 只读 token（一般不用填）':'توکن فقط‌خواندنی Gitee (معمولاً نیازی نیست)','探测':'شناسایی',
+      '关闭系统动画、放开后台进程上限并把当前应用加入电池白名单，低配电脑体感最明显。':'پویانمایی‌های سیستم را خاموش می‌کند، محدودیت فرایندهای پس‌زمینه را کاهش می‌دهد و برنامه فعلی را به فهرست مجاز باتری اضافه می‌کند؛ روی رایانه‌های ضعیف محسوس‌تر است.',
+      '数据分区已扩容':'پارتیشن داده افزایش ظرفیت یافت','系统镜像':'ایمیج سیستم',
+      '运行时数据目录（系统镜像 · 已装应用 · 快照）':'مسیر داده‌های محیط اجرا (ایمیج سیستم، برنامه‌های نصب‌شده و snapshotها)',
+      '安卓数据目录（应用、游戏与快速启动快照）':'مسیر داده‌های اندروید (برنامه‌ها، بازی‌ها و snapshotهای شروع سریع)',
+      '本机共享目录':'پوشه اشتراکی رایانه','安卓内对应目录':'پوشه متناظر در اندروید',
+      '快捷方式目录':'مسیر میان‌برها','关联 .apk 文件':'اتصال فایل‌های ‎.apk‎',
+      '安卓系统设置（不用进安卓桌面）':'تنظیمات سیستم اندروید (بدون نیاز به ورود به دسکتاپ اندروید)',
+      '媒体音量':'بلندی صدای رسانه','字体大小':'اندازه قلم','画质（安卓内部渲染分辨率）':'کیفیت تصویر (وضوح رندر داخلی اندروید)',
+      '虚拟机优先级':'اولویت ماشین مجازی','引擎模式':'حالت موتور اجرا','设备地址':'نشانی دستگاه',
+      '自动模式（默认，无需设置）':'حالت خودکار (پیش‌فرض؛ بدون نیاز به تنظیم)','本机自适应参数':'تنظیمات سازگار با این رایانه',
+      '更新与下载源':'منابع به‌روزرسانی و دانلود','软件更新':'به‌روزرسانی نرم‌افزار','关于':'درباره',
+      '文件互通':'اشتراک‌گذاری فایل','系统集成':'یکپارچه‌سازی سیستم','桌面与应用':'دسکتاپ و برنامه‌ها',
+      '显示模式':'حالت نمایش','竖屏画面大小':'اندازه تصویر عمودی','鼠标键位':'تنظیمات ماوس',
+      '性能与资源占用':'عملکرد و مصرف منابع','资源策略':'حالت مصرف منابع','下载与更新源':'منابع دانلود و به‌روزرسانی',
+      '设置修改后立即生效':'تغییرات تنظیمات بلافاصله اعمال می‌شوند','完成':'انجام شد','卸载 ApkStart':'حذف ApkStart',
+      '安卓原生设置':'تنظیمات اصلی اندروید','显示设置':'تنظیمات نمایش','声音设置':'تنظیمات صدا',
+      '语言设置':'تنظیمات زبان اندروید','应用管理':'مدیریت برنامه‌ها'
+    }
+  };
+  Object.assign(dictionaries.en, extraTranslations.en);
+  Object.assign(dictionaries.fa, extraTranslations.fa);
+
+  Object.assign(dictionaries.en, settingsTranslations.en);
+  Object.assign(dictionaries.fa, settingsTranslations.fa);
+
+  Object.assign(dictionaries.en, runtimeTranslations.en);
+  Object.assign(dictionaries.fa, runtimeTranslations.fa);
+
+  const original = new WeakMap();
+  function translateTextNode(node, lang) {
+    const raw = node.nodeValue;
+    if (!raw || !raw.trim()) return;
+    let record = original.get(node);
+    if (!record) {
+      record = { source: raw, translated: null };
+      original.set(node, record);
+    } else if (record.translated !== null && raw !== record.translated) {
+      // The app updated this text node dynamically; treat the new text as its source.
+      record.source = raw;
+      record.translated = null;
+    }
+    const source = record.source;
+    const key = source.trim();
+    const translated = dictionaries[lang] && dictionaries[lang][key];
+    if (translated) {
+      const next = source.replace(key, translated);
+      if (node.nodeValue !== next) node.nodeValue = next;
+      record.translated = next;
+    } else {
+      if (node.nodeValue !== source) node.nodeValue = source;
+      record.translated = null;
+    }
+  }
+  function apply(lang) {
+    const language = ['zh', 'en', 'fa'].includes(lang) ? lang : 'zh';
+    document.documentElement.lang = language === 'zh' ? 'zh-CN' : language;
+    document.documentElement.dir = language === 'fa' ? 'rtl' : 'ltr';
+    document.body.classList.toggle('locale-fa', language === 'fa');
+    const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+    let node;
+    while ((node = walker.nextNode())) {
+      if (language === 'zh') {
+        if (original.has(node)) node.nodeValue = original.get(node).source;
+      } else translateTextNode(node, language);
+    }
+    document.querySelectorAll('[placeholder],[title],[aria-label]').forEach((el) => {
+      ['placeholder', 'title', 'aria-label'].forEach((attr) => {
+        const value = el.getAttribute(attr);
+        if (!value) return;
+        const key = 'attr:' + attr;
+        if (!el.dataset[key.replace(':','')]) el.dataset[key.replace(':','')] = value;
+        const source = el.dataset[key.replace(':','')];
+        const translated = dictionaries[language] && dictionaries[language][source];
+        if (translated) el.setAttribute(attr, translated);
+        else if (language === 'zh') el.setAttribute(attr, source);
+      });
+    });
+    const picker = document.getElementById('languagePicker');
+    if (picker && picker.value !== language) picker.value = language;
+    localStorage.setItem('apkstart-language', language);
+  }
+
+  function init() {
+    const picker = document.getElementById('languagePicker');
+    const saved = localStorage.getItem('apkstart-language') || 'zh';
+    if (picker) picker.addEventListener('change', () => apply(picker.value));
+    apply(saved);
+    const translateAttributes = (root, lang) => {
+      const nodes = [];
+      if (root.nodeType === Node.ELEMENT_NODE) nodes.push(root);
+      if (root.querySelectorAll) nodes.push(...root.querySelectorAll('[placeholder],[title],[aria-label]'));
+      for (const el of nodes) {
+        ['placeholder', 'title', 'aria-label'].forEach((attr) => {
+          const value = el.getAttribute(attr);
+          if (!value) return;
+          const dataKey = attr;
+          if (!el.dataset[dataKey]) el.dataset[dataKey] = value;
+          const source = el.dataset[dataKey];
+          const translated = dictionaries[lang] && dictionaries[lang][source];
+          if (translated) el.setAttribute(attr, translated);
+          else if (lang === 'zh') el.setAttribute(attr, source);
+        });
+      }
+    };
+    const observer = new MutationObserver((records) => {
+      const lang = localStorage.getItem('apkstart-language') || 'zh';
+      if (lang === 'zh') return;
+      for (const record of records) {
+        if (record.type === 'characterData') translateTextNode(record.target, lang);
+        for (const node of record.addedNodes || []) {
+          if (node.nodeType === Node.TEXT_NODE) translateTextNode(node, lang);
+          else if (node.nodeType === Node.ELEMENT_NODE) {
+            const walker = document.createTreeWalker(node, NodeFilter.SHOW_TEXT);
+            let child;
+            while ((child = walker.nextNode())) translateTextNode(child, lang);
+            translateAttributes(node, lang);
+          }
+        }
+      }
+    });
+    observer.observe(document.body, { childList: true, subtree: true, characterData: true });
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+  else init();
+  window.ApkStartI18n = { apply };
+})();
