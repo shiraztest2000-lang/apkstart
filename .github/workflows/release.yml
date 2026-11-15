@@ -29,6 +29,11 @@ jobs:
       - name: 测试
         run: npm test
 
+      - name: 生成图标与 Logo（应用、安装包、文档统一）
+        run: npx electron build/render-logo.js
+        env:
+          ELECTRON_MIRROR: https://npmmirror.com/mirrors/electron/
+
       - name: 打包便携版
         run: npm run pack
 
@@ -121,6 +126,11 @@ jobs:
 
       - name: 安装依赖
         run: npm ci
+        env:
+          ELECTRON_MIRROR: https://npmmirror.com/mirrors/electron/
+
+      - name: 生成图标与 Logo（应用、安装包、文档统一）
+        run: npx electron build/render-logo.js
         env:
           ELECTRON_MIRROR: https://npmmirror.com/mirrors/electron/
 
