@@ -1822,6 +1822,35 @@
   Object.assign(dictionaries.en, shortAndDynamicTranslations.en);
   Object.assign(dictionaries.fa, shortAndDynamicTranslations.fa);
 
+  const finalPolishTranslations = {
+  "en": {
+    "仍失败请把安装包路径换成纯英文短路径（如 ": "If it still fails, move the installer to a short path containing English characters only (for example, ",
+    "删除全部已安装的第三方 app（含红果、游戏等）及其数据、登录态": "Remove all installed third-party apps, their data, and sign-in sessions",
+    "删除当前 AVD 的快速启动快照": "Delete the current AVD quick-start snapshot",
+    "系统镜像本身不受影响，重新打开应用会再次冷启动建数据": "The system image is not affected. Opening an app again will perform a fresh boot and recreate its data",
+    "修复会按「代价从小到大」依次尝试：": "Repair tries these steps in order, from least to most disruptive:",
+    "1. 冷启动虚拟机（不加载快照）后等待联网 —— 不影响任何数据": "1. Cold-boot the virtual machine without loading a snapshot, then wait for networking — no data is affected",
+    "2. 仍不行才重置安卓数据 —— 应用清单保留、点开会自动重装，": "2. Only if that fails, reset Android data — the app list is preserved and apps are reinstalled when opened,",
+    "但应用内的登录态、追剧记录等会丢失": "but in-app sign-in sessions, watch history, and similar data will be lost",
+    "…另有 ": "…and ",
+    " 项": " items"
+  },
+  "fa": {
+    "仍失败请把安装包路径换成纯英文短路径（如 ": "اگر باز هم ناموفق بود، فایل نصب را به مسیری کوتاه با حروف انگلیسی منتقل کنید (مثلاً ",
+    "删除全部已安装的第三方 app（含红果、游戏等）及其数据、登录态": "همه برنامه‌های شخص ثالث، داده‌ها و نشست‌های ورود آن‌ها حذف می‌شوند",
+    "删除当前 AVD 的快速启动快照": "snapshot شروع سریع AVD فعلی حذف می‌شود",
+    "系统镜像本身不受影响，重新打开应用会再次冷启动建数据": "ایمیج سیستم دست‌نخورده می‌ماند؛ با اجرای دوباره برنامه، اندروید از نو راه‌اندازی و داده‌ها بازسازی می‌شوند",
+    "修复会按「代价从小到大」依次尝试：": "تعمیر به‌ترتیب از کم‌خطرترین روش‌ها انجام می‌شود:",
+    "1. 冷启动虚拟机（不加载快照）后等待联网 —— 不影响任何数据": "۱. راه‌اندازی سرد ماشین مجازی بدون بارگذاری snapshot و انتظار برای اتصال؛ هیچ داده‌ای تغییر نمی‌کند",
+    "2. 仍不行才重置安卓数据 —— 应用清单保留、点开会自动重装，": "۲. فقط اگر مشکل حل نشد، داده‌های اندروید بازنشانی می‌شوند؛ فهرست برنامه‌ها حفظ و هنگام اجرا دوباره نصب می‌شوند،",
+    "但应用内的登录态、追剧记录等会丢失": "اما نشست‌های ورود، سابقه تماشا و داده‌های مشابه داخل برنامه از بین می‌روند",
+    "…另有 ": "… و ",
+    " 项": " مورد"
+  }
+};
+  Object.assign(dictionaries.en, finalPolishTranslations.en);
+  Object.assign(dictionaries.fa, finalPolishTranslations.fa);
+
   const original = new WeakMap();
   function translateTextNode(node, lang) {
     const raw = node.nodeValue;
@@ -1843,7 +1872,7 @@
       // Translate stable Chinese phrases inside dynamic strings (for example, counts and versions).
       let partial = source;
       const fragments = Object.keys(dictionary)
-        .filter((item) => (item.length >= 3 || ['共 ', '自动', '待机', '引擎', '打开', '完成', '取消', '继续', '未知', '修复'].includes(item)) && /[\u4e00-\u9fff]/.test(item))
+        .filter((item) => (item.length >= 3 || ['共 ', ' 项', '自动', '待机', '引擎', '打开', '完成', '取消', '继续', '未知', '修复'].includes(item)) && /[\u4e00-\u9fff]/.test(item))
         .sort((a, b) => b.length - a.length);
       for (const item of fragments) {
         if (partial.includes(item)) partial = partial.split(item).join(dictionary[item]);
@@ -1943,7 +1972,7 @@
     if (dictionary[key]) return source.replace(key, dictionary[key]);
     let partial = source;
     const fragments = Object.keys(dictionary)
-      .filter((item) => (item.length >= 3 || ['共 ', '自动', '待机', '引擎', '打开', '完成', '取消', '继续', '未知', '修复'].includes(item)) && /[\u4e00-\u9fff]/.test(item))
+      .filter((item) => (item.length >= 3 || ['共 ', ' 项', '自动', '待机', '引擎', '打开', '完成', '取消', '继续', '未知', '修复'].includes(item)) && /[\u4e00-\u9fff]/.test(item))
       .sort((x, y) => y.length - x.length);
     for (const item of fragments) {
       if (partial.includes(item)) partial = partial.split(item).join(dictionary[item]);
