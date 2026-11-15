@@ -1,0 +1,30 @@
+name: Repair release metadata and remove obsolete releases
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Update v0.4.3 release notes and remove older releases
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          gh release edit v0.4.3 --title "ApkStart v0.4.3" --notes-file .github/release-notes-v0.4.3-en.md
+          while IFS= read -r tag; do
+            [ -z "$tag" ] && continue
+            if [ "$tag" != "v0.4.3" ]; then
+              echo "Deleting obsolete release and tag: $tag"
+              gh release delete "$tag" --yes --cleanup-tag
+            fi
+          done < <(gh release list --limit 100 --json tagName --jq '.[].tagName')
+          echo "Remaining releases:"
+          gh release list --limit 100
