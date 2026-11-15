@@ -1,8 +1,6 @@
 name: Release
 
 on:
-  push:
-    tags: ['v*']
   workflow_dispatch:
 
 permissions:
@@ -26,7 +24,7 @@ jobs:
             $package = Get-Content package.json -Raw | ConvertFrom-Json
             $tag = "v$($package.version)"
           } else {
-            $tag = "${{ steps.release_meta.outputs.tag }}"
+            $tag = "${{ github.ref_name }}"
             if (-not $tag.StartsWith('v')) { $tag = "v$tag" }
           }
           "tag=$tag" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8 -Append
@@ -60,7 +58,7 @@ jobs:
       - name: 压缩产物（7-Zip，体积闸门 100MiB）
         shell: pwsh
         run: |
-          $tag = "${{ needs.build.outputs.release_tag }}"
+          $tag = "${{ steps.release_meta.outputs.tag }}"
           if (-not $tag.StartsWith('v')) { $tag = "v$tag" }
           node build/zip.js dist/ApkStart-win64-portable "ApkStart-$tag-win64-portable.zip" --limit-mb 100
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
@@ -119,7 +117,7 @@ jobs:
             Write-Error "缺少 GITEE_TOKEN：Gitee 这一版不会有安装包。请在 Settings → Secrets and variables → Actions 添加 GITEE_TOKEN（勾选 projects + pull_requests 之外的 releases 权限即可）。"
             exit 1
           }
-          $tag = "${{ github.ref_name }}"
+          $tag = "${{ steps.release_meta.outputs.tag }}"
           if (-not $tag.StartsWith('v')) { $tag = "v$tag" }
           # 发布说明与 GitHub 用同一份，别让 Gitee 那边只剩一句「便携版安装包」
           $notes = ".github/release-notes-$tag.md"
@@ -210,7 +208,7 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         shell: pwsh
         run: |
-          $tag = "${{ github.ref_name }}"
+          $tag = "${{ steps.release_meta.outputs.tag }}"
           if (-not $tag.StartsWith('v')) { $tag = "v$tag" }
           $setup = Get-ChildItem dist/release/*Setup.exe | Select-Object -First 1
           if (-not $setup) { Write-Error "未找到 Setup.exe"; exit 1 }
@@ -230,7 +228,7 @@ jobs:
       - name: 打包运行时整包（轻量版下载源）
         shell: pwsh
         run: |
-          $tag = "${{ github.ref_name }}"
+          $tag = "${{ steps.release_meta.outputs.tag }}"
           if (-not $tag.StartsWith('v')) { $tag = "v$tag" }
           $zip = "ApkStart-runtime-$tag.zip"
           if (-not (Test-Path "build\runtime\emulator\emulator.exe")) { Write-Error "build\runtime 不完整"; exit 1 }
@@ -243,7 +241,7 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         shell: pwsh
         run: |
-          $tag = "${{ github.ref_name }}"
+          $tag = "${{ steps.release_meta.outputs.tag }}"
           if (-not $tag.StartsWith('v')) { $tag = "v$tag" }
           $zip = "ApkStart-runtime-$tag.zip"
           $ok = $false
