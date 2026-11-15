@@ -208,7 +208,7 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         shell: pwsh
         run: |
-          $tag = "${{ steps.release_meta.outputs.tag }}"
+          $tag = "${{ needs.build.outputs.release_tag }}"
           if (-not $tag.StartsWith('v')) { $tag = "v$tag" }
           $setup = Get-ChildItem dist/release/*Setup.exe | Select-Object -First 1
           if (-not $setup) { Write-Error "未找到 Setup.exe"; exit 1 }
@@ -228,7 +228,7 @@ jobs:
       - name: 打包运行时整包（轻量版下载源）
         shell: pwsh
         run: |
-          $tag = "${{ steps.release_meta.outputs.tag }}"
+          $tag = "${{ needs.build.outputs.release_tag }}"
           if (-not $tag.StartsWith('v')) { $tag = "v$tag" }
           $zip = "ApkStart-runtime-$tag.zip"
           if (-not (Test-Path "build\runtime\emulator\emulator.exe")) { Write-Error "build\runtime 不完整"; exit 1 }
@@ -241,7 +241,7 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         shell: pwsh
         run: |
-          $tag = "${{ steps.release_meta.outputs.tag }}"
+          $tag = "${{ needs.build.outputs.release_tag }}"
           if (-not $tag.StartsWith('v')) { $tag = "v$tag" }
           $zip = "ApkStart-runtime-$tag.zip"
           $ok = $false
