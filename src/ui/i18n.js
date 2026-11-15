@@ -1943,7 +1943,7 @@
     if (dictionary[key]) return source.replace(key, dictionary[key]);
     let partial = source;
     const fragments = Object.keys(dictionary)
-      .filter((item) => (item.length >= 3 || ['共 ', '自动', '待机', '引擎', '打开', '完成', '取消', '继续', '未知', '修复'].includes(item)) && /[\\u4e00-\\u9fff]/.test(item))
+      .filter((item) => (item.length >= 3 || ['共 ', '自动', '待机', '引擎', '打开', '完成', '取消', '继续', '未知', '修复'].includes(item)) && /[\u4e00-\u9fff]/.test(item))
       .sort((x, y) => y.length - x.length);
     for (const item of fragments) {
       if (partial.includes(item)) partial = partial.split(item).join(dictionary[item]);
