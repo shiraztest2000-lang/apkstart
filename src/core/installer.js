@@ -449,6 +449,24 @@ class Installer {
         await rt.client.install(app.apkPath).catch((e) => onLog(`自动安装失败：${e.message}`));
       }
     }
+    // Android 13+ supports per-app language preferences through LocaleManager.
+    // Google Play images disallow adb root, so set English per package instead of
+    // trying to rewrite the system locale. This is persistent and affects only
+    // this app; packages without English resources fall back to their own default.
+    if (/^[A-Za-z0-9_.]+$/.test(String(pkg || ''))) {
+      try {
+        await rt.client.shell(`cmd locale set-app-locales ${pkg} --locales en-US`, { timeout: 8000 });
+        const appLocales = String(await rt.client.shell(`cmd locale get-app-locales ${pkg}`, { timeout: 5000 })).trim();
+        if (!/en-US/i.test(appLocales)) {
+          onLog(`English app locale was not verified for ${pkg}: ${appLocales || 'empty'}`);
+        } else {
+          onLog(`English app locale applied: ${pkg}`);
+        }
+      } catch (e) {
+        // Older Android versions may not expose per-app locales. Do not block launch.
+        onLog(`Could not set per-app English locale for ${pkg}: ${e.message}`);
+      }
+    }
     // 观察 25 秒并要求「连续存活 5 秒」才算启动成功。
     // 关键：进程"还没起来"和"起来过又没了"必须分开看。以前一看到 pidof 为空就判失败，
     // 结果大型应用（红果这种首启要十几秒的）在加载途中就被 force-stop 重启，
