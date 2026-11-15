@@ -526,26 +526,9 @@ class Runtime {
   }
 
   async prepare(client) {
-    // Set the Android guest OS locale through LocaleManager's supported shell API.
-    // Do not use adb root or setprop: Google Play system images intentionally deny
-    // adb root, so those commands silently leave the guest in its original language.
-    try {
-      const current = String(await client.shell('cmd locale get-system-locales', { timeout: 5000 })).trim();
-      if (!/^en-US(?:,|$)/i.test(current)) {
-        await client.shell('cmd locale set-system-locales en-US', { timeout: 10000 });
-        await new Promise((resolve) => setTimeout(resolve, 500));
-      }
-      const verified = String(await client.shell('cmd locale get-system-locales', { timeout: 5000 })).trim();
-      const effective = String(await client.shell('am get-config', { timeout: 5000 })).trim();
-      if (!/^en-US(?:,|$)/i.test(verified) || !/\ben-rUS\b/i.test(effective)) {
-        this.log(`Android locale was not verified as English (locales: ${verified || 'empty'}; config: ${effective.slice(0, 160)})`);
-      } else {
-        this.log('Android guest system locale verified: en-US');
-      }
-    } catch (e) {
-      // Locale configuration must never prevent an app from starting.
-      this.log(`Could not configure Android system locale: ${e.message}`);
-    }
+    // Per-app English locales are applied by Installer.launch after the package
+    // is installed. The Google Play system image does not allow adb root, and
+    // Android's stock "cmd locale" shell does not expose a system-wide setter.
     if (!this._freeformReady) {
       try { this._freeformReady = await client.ensureFreeform(); } catch (_) { /* ignore */ }
     }
