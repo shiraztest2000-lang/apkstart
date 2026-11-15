@@ -526,6 +526,22 @@ class Runtime {
   }
 
   async prepare(client) {
+    // Keep Android's own Settings, system dialogs, and newly launched apps in English.
+    // The Electron UI has its separate English/Persian selector; this is the Android
+    // guest OS locale and must be configured after every cold boot or runtime adoption.
+    try {
+      const locale = String(await client.shell('cmd locale get-system-locales', { timeout: 5000 })).trim();
+      if (!/^en-US(?:,|$)/i.test(locale)) {
+        await client.shell('cmd locale set-system-locales en-US', { timeout: 10000 });
+        const verified = String(await client.shell('cmd locale get-system-locales', { timeout: 5000 })).trim();
+        if (!/^en-US(?:,|$)/i.test(verified)) {
+          this.log(`Android locale request did not verify (reported: ${verified || 'empty'})`);
+        }
+      }
+    } catch (e) {
+      // Locale support differs across Android image builds; never block app startup.
+      this.log(`Could not set Android system locale to en-US: ${e.message}`);
+    }
     if (!this._freeformReady) {
       try { this._freeformReady = await client.ensureFreeform(); } catch (_) { /* ignore */ }
     }
