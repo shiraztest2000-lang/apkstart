@@ -1041,6 +1041,48 @@
   Object.assign(dictionaries.en, finalUiTranslations.en);
   Object.assign(dictionaries.fa, finalUiTranslations.fa);
 
+  // Additional full-sentence UI coverage found during the localization audit.
+  const auditedUiTranslations = {
+    en: {
+      '安装完成后会自动生成桌面图标，双击即以独立窗口运行，和普通 Windows 软件一样。': 'A desktop shortcut is created automatically after installation. Double-click it to run the app in its own window, just like a regular Windows application.',
+      '已注册 .apk 关联时，在资源管理器里双击 APK 也会直接装到 ApkStart。': 'When .apk file association is enabled, double-click an APK in File Explorer to install it directly in ApkStart.',
+      '启动菜单': 'Boot menu',
+      'Installation - Install Android-x86 to harddisk': 'Installation - Install Android-x86 to hard disk',
+      'Choose Partition': 'Choose Partition',
+      'Create/Modify partitions': 'Create/Modify partitions',
+      'cfdisk 分区': 'Partition with cfdisk',
+      '格式化': 'Format',
+      '引导与系统': 'Bootloader and system',
+      '完成': 'Done',
+      '本项目仓库已公开，Gitee 的发行版列表匿名就能读，留空也能用 Gitee 源。': 'This project repository is public. Gitee release listings can be read anonymously, so you can leave this field blank and still use the Gitee source.',
+      'gitee.com → 设置 → 私人令牌，只勾「projects」即可，它只用于读取发行版列表，': 'On gitee.com, open Settings → Personal Access Tokens and select only “projects”. The token is used only to read release listings and',
+      '真正吃盘的是这一块：数据分区（默认 6 GB，可在上面对大）+ 快速启动快照（约 2–3 GB）。': 'This is the main disk-space consumer: the data partition (6 GB by default; increase it above) plus the quick-start snapshot (about 2–3 GB).',
+      '磁盘紧张时把它指到另一个盘（如 D:），重启软件后生效；旧目录里的': 'If disk space is low, move this to another drive (such as D:) and restart the app; the existing folder',
+      '从 GitHub（RoutineMiku/apkstart）获取最新版本；轻量版会下载便携包并自动替换程序文件，': 'Get the latest version from GitHub (RoutineMiku/apkstart). The Lite edition downloads the portable package and automatically replaces the program files;',
+      '运行时、已装应用与快照都不受影响。': 'the runtime, installed apps, and snapshots are not affected.'
+    },
+    fa: {
+      '安装完成后会自动生成桌面图标，双击即以独立窗口运行，和普通 Windows 软件一样。': 'پس از نصب، میان‌بر دسکتاپ به‌صورت خودکار ساخته می‌شود. با دوبار کلیک، برنامه مانند یک نرم‌افزار معمول ویندوز در پنجره‌ای مستقل اجرا می‌شود.',
+      '已注册 .apk 关联时，在资源管理器里双击 APK 也会直接装到 ApkStart。': 'اگر اتصال پسوند ‎.apk‎ فعال باشد، با دوبار کلیک روی فایل APK در File Explorer، برنامه مستقیماً در ApkStart نصب می‌شود.',
+      '启动菜单': 'منوی راه‌اندازی',
+      'Installation - Install Android-x86 to harddisk': 'Installation - Install Android-x86 to hard disk',
+      'Choose Partition': 'انتخاب پارتیشن',
+      'Create/Modify partitions': 'ایجاد یا ویرایش پارتیشن‌ها',
+      'cfdisk 分区': 'پارتیشن‌بندی با cfdisk',
+      '格式化': 'قالب‌بندی',
+      '引导与系统': 'راه‌انداز و سیستم',
+      '完成': 'انجام شد',
+      '本项目仓库已公开，Gitee 的发行版列表匿名就能读，留空也能用 Gitee 源。': 'مخزن این پروژه عمومی است. فهرست انتشارهای Gitee بدون ورود قابل خواندن است؛ بنابراین می‌توانید این قسمت را خالی بگذارید و همچنان از منبع Gitee استفاده کنید.',
+      'gitee.com → 设置 → 私人令牌，只勾「projects」即可，它只用于读取发行版列表，': 'در gitee.com به Settings → Personal Access Tokens بروید و فقط گزینه «projects» را فعال کنید. این توکن فقط برای خواندن فهرست انتشارها استفاده می‌شود و',
+      '真正吃盘的是这一块：数据分区（默认 6 GB，可在上面对大）+ 快速启动快照（约 2–3 GB）。': 'بیشترین مصرف فضای دیسک مربوط به این بخش است: پارتیشن داده (پیش‌فرض ۶ گیگابایت؛ از بالا قابل افزایش) به‌علاوه snapshot شروع سریع (حدود ۲ تا ۳ گیگابایت).',
+      '磁盘紧张时把它指到另一个盘（如 D:），重启软件后生效；旧目录里的': 'اگر فضای دیسک کم است، مسیر را به درایوی دیگر مانند D منتقل کنید و برنامه را دوباره اجرا کنید؛ پوشه فعلی',
+      '从 GitHub（RoutineMiku/apkstart）获取最新版本；轻量版会下载便携包并自动替换程序文件，': 'آخرین نسخه از GitHub (RoutineMiku/apkstart) دریافت می‌شود. نسخه سبک بسته قابل‌حمل را دانلود و فایل‌های برنامه را خودکار جایگزین می‌کند؛',
+      '运行时、已装应用与快照都不受影响。': 'محیط اجرا، برنامه‌های نصب‌شده و snapshotها تحت تأثیر قرار نمی‌گیرند.'
+    }
+  };
+  Object.assign(dictionaries.en, auditedUiTranslations.en);
+  Object.assign(dictionaries.fa, auditedUiTranslations.fa);
+
   const original = new WeakMap();
   function translateTextNode(node, lang) {
     const raw = node.nodeValue;
