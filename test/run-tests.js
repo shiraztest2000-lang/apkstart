@@ -180,5 +180,38 @@ console.log('\n[合成 APK：axml + apk 全链路]');
   }
 }
 
+console.log('\n[localization]');
+const uiI18n = fs.readFileSync(path.join(__dirname, '../src/ui/i18n.js'), 'utf8');
+const uiShell = fs.readFileSync(path.join(__dirname, '../src/ui/shell.html'), 'utf8');
+const uiMain = fs.readFileSync(path.join(__dirname, '../src/main.js'), 'utf8');
+const uiEngine = fs.readFileSync(path.join(__dirname, '../src/core/engine.js'), 'utf8');
+const appPackage = require('../package.json');
+const appLock = require('../package-lock.json');
+test('English and Persian dictionaries cover app context-menu labels', () => {
+  for (const phrase of ['打开应用', '创建桌面快捷方式', '固定到顶部', '取消固定', '打开 APK 所在位置', '清除应用数据', '卸载']) {
+    assert(uiI18n.includes(phrase), \`missing localization key: \${phrase}\`);
+  }
+  assert(uiI18n.includes('Open app') && uiI18n.includes('باز کردن برنامه'), 'English/Persian menu translations are required');
+});
+test('Android app window loads localization before its shell script', () => {
+  assert(uiShell.includes('<html lang="en">'), 'shell must default to English');
+  assert(uiShell.indexOf('i18n.js') >= 0 && uiShell.indexOf('i18n.js') < uiShell.indexOf('shell.js'), 'i18n.js must load before shell.js');
+  assert(uiI18n.includes('function translateString'), 'shared string translator must be available for native prompts');
+});
+test('Native dialogs and notifications follow the selected UI language', () => {
+  assert(uiMain.includes('function nativeUiText'), 'native UI translation helper missing');
+  assert(uiMain.includes('title: nativeUiText(title)'), 'notifications must translate their title');
+  assert(uiMain.includes("message: nativeUiText(opts.message || '')"), 'native confirmation messages must be translated');
+});
+test('Android guest locale is set and verified through LocaleManager', () => {
+  assert(uiEngine.includes('cmd locale set-system-locales en-US'), 'Android system locale command missing');
+  assert(uiEngine.includes('cmd locale get-system-locales'), 'Android system locale verification missing');
+  assert(!uiEngine.includes("client.exec(['root'])"), 'locale setup must not rely on adb root on Google Play images');
+});
+test('fork version and lockfile match upstream ApkStart 0.4.3', () => {
+  assert(appPackage.version === '0.4.3', \`package version is \${appPackage.version}\`);
+  assert(appLock.version === '0.4.3' && appLock.packages[''].version === '0.4.3', 'package lock version is out of sync');
+});
+
 console.log(`\n结果：${passed} 通过，${failed} 失败\n`);
 process.exit(failed ? 1 : 0);
