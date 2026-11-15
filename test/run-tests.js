@@ -200,7 +200,11 @@ test('Android app window loads localization before its shell script', () => {
   assert(uiI18n.includes('function translateString'), 'shared string translator must be available for native prompts');
   for (const file of ['../src/main.js', '../src/core/engine.js', '../src/core/installer.js', '../src/ui/app.js', '../src/ui/i18n.js', '../src/ui/shell.js']) {
     const source = fs.readFileSync(path.join(__dirname, file), 'utf8');
-    assert.doesNotThrow(() => new vm.Script(source, { filename: file }), 'syntax error in ' + file);
+    try {
+      new vm.Script(source, { filename: file });
+    } catch (error) {
+      throw new Error('syntax error in ' + file + ': ' + error.message);
+    }
   }
 });
 test('Native dialogs and notifications follow the selected UI language', () => {
