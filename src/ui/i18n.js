@@ -1851,6 +1851,79 @@
   Object.assign(dictionaries.en, finalPolishTranslations.en);
   Object.assign(dictionaries.fa, finalPolishTranslations.fa);
 
+  // Additional runtime, installer, and diagnostic messages found in the full-source audit.
+  const runtimeAuditTranslations = {
+    en: {
+  "拆分包的 base APK 解析失败": "Failed to parse the base APK in the split package",
+  "已识别": "Recognized",
+  "正在更新应用…": "Updating app…",
+  "应用图标无法解析（可能是特殊格式的自适应图标），快捷方式暂时使用占位图标。": "Could not parse the app icon (possibly an unsupported adaptive icon format). A placeholder icon will be used for now.",
+  "应用图标（WebP）解码失败，快捷方式暂时使用占位图标。": "Could not decode the app icon (WebP). A placeholder icon will be used for now.",
+  "由 ApkStart 运行": "— Run by ApkStart",
+  "显示适配跳过：": "Display adaptation skipped: ",
+  "虚拟机网络就绪": "Virtual machine network ready",
+  "虚拟机网络还没就绪，先启动应用（联网页面可能稍后才加载出来）": "The virtual machine network is not ready yet. Starting the app anyway; online content may load later.",
+  "应用尚未安装，正在自动安装…": "App is not installed. Installing automatically…",
+  "应用启动后退出": "App exited after launch",
+  "正在自动重试…": "Retrying automatically…",
+  "应用连续退出，正在重置应用数据后重试…": "The app keeps exiting. Resetting its data and retrying…",
+  "应用启动后立即退出，已自动重试并重置应用数据仍未成功": "The app exits immediately after launch. Automatic retries and an app-data reset did not resolve the issue.",
+  "adb 连接异常，重启 adb server 后继续等待…": "ADB connection error. Restarting the ADB server and continuing to wait…",
+  "预热：": "Warming up: ",
+  "预热完成": "Warm-up complete",
+  "尚未安装 Android 系统到虚拟磁盘": "Android has not been installed to the virtual disk yet.",
+  "Android 已引导但系统服务未就绪（可能停在首次开机设置界面，请在虚拟机窗口里完成向导）": "Android has booted, but system services are not ready. It may be waiting at the first-run setup screen; complete the setup in the virtual machine window.",
+  "正在等待系统服务…": "Waiting for system services…",
+  "等待 Android 启动…": "Waiting for Android to start…",
+  "monitor 超时": "Monitor timed out",
+  "正在等待安卓虚拟机联网…": "Waiting for the Android virtual machine to connect to the network…",
+  "网络仍未就绪，正在冷启动一次虚拟机（不加载快照）后重试…": "The network is still unavailable. Cold-booting the virtual machine without loading a snapshot, then retrying…",
+  "虚拟机没能启动": "The virtual machine failed to start.",
+  "重置后仍未联网。请检查本机网络/防火墙是否拦截了模拟器（netsimd 走本机回环端口）。": "The network is still unavailable after the reset. Check whether your computer's network or firewall is blocking the emulator (netsimd uses a local loopback port).",
+  "新通知": "New notification",
+  "安卓应用": "Android apps",
+  "MuMu 模拟器": "MuMu emulator",
+  "Nox 夜神": "Nox (NoxPlayer)",
+  "MEmu 逍遥": "MEmu emulator"
+},
+    fa: {
+  "拆分包的 base APK 解析失败": "تجزیه فایل base APK در بسته چندبخشی ناموفق بود",
+  "已识别": "شناسایی شد",
+  "正在更新应用…": "در حال به‌روزرسانی برنامه…",
+  "应用图标无法解析（可能是特殊格式的自适应图标），快捷方式暂时使用占位图标。": "امکان پردازش آیکون برنامه وجود ندارد (احتمالاً قالب آیکون تطبیقی پشتیبانی نمی‌شود). فعلاً از آیکون جایگزین استفاده می‌شود.",
+  "应用图标（WebP）解码失败，快捷方式暂时使用占位图标。": "رمزگشایی آیکون WebP ناموفق بود؛ فعلاً از آیکون جایگزین استفاده می‌شود.",
+  "由 ApkStart 运行": "— اجراشده با ApkStart",
+  "显示适配跳过：": "سازگارسازی نمایش نادیده گرفته شد: ",
+  "虚拟机网络就绪": "شبکه ماشین مجازی آماده است",
+  "虚拟机网络还没就绪，先启动应用（联网页面可能稍后才加载出来）": "شبکه ماشین مجازی هنوز آماده نیست؛ برنامه اجرا می‌شود و ممکن است محتوای آنلاین کمی دیرتر بارگذاری شود.",
+  "应用尚未安装，正在自动安装…": "برنامه نصب نشده است؛ نصب خودکار در حال انجام است…",
+  "应用启动后退出": "برنامه پس از اجرا بسته شد",
+  "正在自动重试…": "تلاش مجدد خودکار…",
+  "应用连续退出，正在重置应用数据后重试…": "برنامه پی‌درپی بسته می‌شود؛ داده‌های آن بازنشانی و دوباره تلاش می‌شود…",
+  "应用启动后立即退出，已自动重试并重置应用数据仍未成功": "برنامه بلافاصله پس از اجرا بسته می‌شود؛ تلاش مجدد خودکار و بازنشانی داده‌ها نیز مشکل را حل نکرد.",
+  "adb 连接异常，重启 adb server 后继续等待…": "اتصال ADB دچار مشکل شد؛ سرور ADB راه‌اندازی مجدد می‌شود و انتظار ادامه می‌یابد…",
+  "预热：": "آماده‌سازی اولیه: ",
+  "预热完成": "آماده‌سازی اولیه کامل شد",
+  "尚未安装 Android 系统到虚拟磁盘": "هنوز سیستم‌عامل اندروید روی دیسک مجازی نصب نشده است.",
+  "Android 已引导但系统服务未就绪（可能停在首次开机设置界面，请在虚拟机窗口里完成向导）": "اندروید راه‌اندازی شده، اما سرویس‌های سیستم آماده نیستند. ممکن است در صفحه راه‌اندازی اولیه متوقف شده باشد؛ مراحل راه‌اندازی را در پنجره ماشین مجازی کامل کنید.",
+  "正在等待系统服务…": "در انتظار سرویس‌های سیستم…",
+  "等待 Android 启动…": "در انتظار راه‌اندازی اندروید…",
+  "monitor 超时": "مهلت انتظار monitor به پایان رسید",
+  "正在等待安卓虚拟机联网…": "در انتظار اتصال ماشین مجازی اندروید به شبکه…",
+  "网络仍未就绪，正在冷启动一次虚拟机（不加载快照）后重试…": "شبکه همچنان آماده نیست؛ ماشین مجازی بدون بارگذاری snapshot به‌صورت سرد راه‌اندازی و دوباره تلاش می‌شود…",
+  "虚拟机没能启动": "راه‌اندازی ماشین مجازی ناموفق بود",
+  "重置后仍未联网。请检查本机网络/防火墙是否拦截了模拟器（netsimd 走本机回环端口）。": "پس از بازنشانی نیز اتصال شبکه برقرار نشد. بررسی کنید شبکه یا فایروال رایانه مانع شبیه‌ساز نشده باشد (netsimd از درگاه loopback محلی استفاده می‌کند).",
+  "新通知": "اعلان جدید",
+  "安卓应用": "برنامه‌های اندروید",
+  "MuMu 模拟器": "شبیه‌ساز MuMu",
+  "Nox 夜神": "شبیه‌ساز Nox (NoxPlayer)",
+  "MEmu 逍遥": "شبیه‌ساز MEmu"
+}
+  };
+  Object.assign(dictionaries.en, runtimeAuditTranslations.en);
+  Object.assign(dictionaries.fa, runtimeAuditTranslations.fa);
+
+
   const original = new WeakMap();
   function translateTextNode(node, lang) {
     const raw = node.nodeValue;
