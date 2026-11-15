@@ -526,35 +526,21 @@ class Runtime {
   }
 
   async prepare(client) {
-    // Keep Android Settings, system dialogs, and newly launched apps in English.
-    // The Electron UI has its separate English/Persian selector. Android's system
-    // locale is a persistent property; changing it requires a root-capable emulator
-    // and a zygote restart. Verify the property instead of trusting a no-op command.
+    // Set the Android guest OS locale through LocaleManager's supported shell API.
+    // Do not use adb root or setprop: Google Play system images intentionally deny
+    // adb root, so those commands silently leave the guest in its original language.
     try {
-      const current = String(await client.shell('getprop persist.sys.locale', { timeout: 5000 })).trim();
-      if (!/^en-US$/i.test(current)) {
-        try {
-          await client.exec(['root'], { timeout: 10000 });
-        } catch (rootError) {
-          this.log(`Android locale unchanged: emulator does not allow adb root (${rootError.message})`);
-        }
-        const onlineUntil = Date.now() + 15000;
-        while (Date.now() < onlineUntil && !(await client.isOnline().catch(() => false))) {
-          // eslint-disable-next-line no-await-in-loop
-          await new Promise((resolve) => setTimeout(resolve, 500));
-        }
-        await client.shell('setprop persist.sys.locale en-US', { timeout: 10000 });
-        const verified = String(await client.shell('getprop persist.sys.locale', { timeout: 5000 })).trim();
-        if (/^en-US$/i.test(verified)) {
-          await client.shell('setprop ctl.restart zygote', { timeout: 10000 }).catch(() => {});
-          await this.waitAndroidReady(client, 60000, () => {});
-          const effective = String(await client.shell('am get-config', { timeout: 5000 })).trim();
-          if (!/\ben-rUS\b/i.test(effective)) {
-            this.log(`Android locale property is en-US, but effective config is not verified: ${effective.slice(0, 180)}`);
-          }
-        } else {
-          this.log(`Android locale could not be changed (persist.sys.locale reports: ${verified || 'empty'})`);
-        }
+      const current = String(await client.shell('cmd locale get-system-locales', { timeout: 5000 })).trim();
+      if (!/^en-US(?:,|$)/i.test(current)) {
+        await client.shell('cmd locale set-system-locales en-US', { timeout: 10000 });
+        await new Promise((resolve) => setTimeout(resolve, 500));
+      }
+      const verified = String(await client.shell('cmd locale get-system-locales', { timeout: 5000 })).trim();
+      const effective = String(await client.shell('am get-config', { timeout: 5000 })).trim();
+      if (!/^en-US(?:,|$)/i.test(verified) || !/\\ben-rUS\\b/i.test(effective)) {
+        this.log(`Android locale was not verified as English (locales: ${verified || 'empty'}; config: ${effective.slice(0, 160)})`);
+      } else {
+        this.log('Android guest system locale verified: en-US');
       }
     } catch (e) {
       // Locale configuration must never prevent an app from starting.
