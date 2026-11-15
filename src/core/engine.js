@@ -526,21 +526,35 @@ class Runtime {
   }
 
   async prepare(client) {
-    // Keep Android's own Settings, system dialogs, and newly launched apps in English.
-    // The Electron UI has its separate English/Persian selector; this is the Android
-    // guest OS locale and must be configured after every cold boot or runtime adoption.
+    // Keep Android Settings, system dialogs, and newly launched apps in English.
+    // The Electron UI has its separate English/Persian selector. Android's system
+    // locale is a persistent property; changing it requires a root-capable emulator
+    // and a zygote restart. Verify the property instead of trusting a no-op command.
     try {
-      const locale = String(await client.shell('cmd locale get-system-locales', { timeout: 5000 })).trim();
-      if (!/^en-US(?:,|$)/i.test(locale)) {
-        await client.shell('cmd locale set-system-locales en-US', { timeout: 10000 });
-        const verified = String(await client.shell('cmd locale get-system-locales', { timeout: 5000 })).trim();
-        if (!/^en-US(?:,|$)/i.test(verified)) {
-          this.log(`Android locale request did not verify (reported: ${verified || 'empty'})`);
+      const current = String(await client.shell('getprop persist.sys.locale', { timeout: 5000 })).trim();
+      if (!/^en-US$/i.test(current)) {
+        try {
+          await client.exec(['root'], { timeout: 10000 });
+        } catch (rootError) {
+          this.log(`Android locale unchanged: emulator does not allow adb root (${rootError.message})`);
+        }
+        const onlineUntil = Date.now() + 15000;
+        while (Date.now() < onlineUntil && !(await client.isOnline().catch(() => false))) {
+          // eslint-disable-next-line no-await-in-loop
+          await new Promise((resolve) => setTimeout(resolve, 500));
+        }
+        await client.shell('setprop persist.sys.locale en-US', { timeout: 10000 });
+        const verified = String(await client.shell('getprop persist.sys.locale', { timeout: 5000 })).trim();
+        if (/^en-US$/i.test(verified)) {
+          await client.shell('setprop ctl.restart zygote', { timeout: 10000 }).catch(() => {});
+          await this.waitAndroidReady(client, 60000, () => {});
+        } else {
+          this.log(`Android locale could not be changed (persist.sys.locale reports: ${verified || 'empty'})`);
         }
       }
     } catch (e) {
-      // Locale support differs across Android image builds; never block app startup.
-      this.log(`Could not set Android system locale to en-US: ${e.message}`);
+      // Locale configuration must never prevent an app from starting.
+      this.log(`Could not configure Android system locale: ${e.message}`);
     }
     if (!this._freeformReady) {
       try { this._freeformReady = await client.ensureFreeform(); } catch (_) { /* ignore */ }
