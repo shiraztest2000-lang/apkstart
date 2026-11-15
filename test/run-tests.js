@@ -189,7 +189,7 @@ const appPackage = require('../package.json');
 const appLock = require('../package-lock.json');
 test('English and Persian dictionaries cover app context-menu labels', () => {
   for (const phrase of ['打开应用', '创建桌面快捷方式', '固定到顶部', '取消固定', '打开 APK 所在位置', '清除应用数据', '卸载']) {
-    assert(uiI18n.includes(phrase), \`missing localization key: \${phrase}\`);
+    assert(uiI18n.includes(phrase), `missing localization key: ${phrase}`);
   }
   assert(uiI18n.includes('Open app') && uiI18n.includes('باز کردن برنامه'), 'English/Persian menu translations are required');
 });
@@ -209,7 +209,7 @@ test('Android guest locale is set and verified through LocaleManager', () => {
   assert(uiInstaller.includes('cmd locale get-app-locales'), 'per-app locale verification missing');
 });
 test('fork version and lockfile match upstream ApkStart 0.4.3', () => {
-  assert(appPackage.version === '0.4.3', \`package version is \${appPackage.version}\`);
+  assert(appPackage.version === '0.4.3', `package version is ${appPackage.version}`);
   assert(appLock.version === '0.4.3' && appLock.packages[''].version === '0.4.3', 'package lock version is out of sync');
 });
 
