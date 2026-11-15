@@ -4,8 +4,7 @@
 
 <p align="center">
   <a href="README.fa.md">🇮🇷 فارسی</a> ·
-  <a href="README.en.md">🇬🇧 English</a> ·
-  <a href="README.zh-CN.md">🇨🇳 简体中文</a>
+  <a href="README.en.md">🇬🇧 English</a>
 </p>
 
 [![CI](https://github.com/RoutineMiku/apkstart/actions/workflows/ci.yml/badge.svg)](https://github.com/RoutineMiku/apkstart/actions/workflows/ci.yml)
@@ -62,7 +61,7 @@ npm test               # اجرای مجموعه آزمون‌ها
 npm run selftest       # بررسی محیط اجرا پس از نصب اندروید
 ```
 
-برای جزئیات فنی بیشتر و توضیحات پیشرفته محیط اجرا، [مستندات اصلی چینی](README.zh-CN.md) را ببینید.
+
 
 ## محیط اجرا و سازگاری
 
