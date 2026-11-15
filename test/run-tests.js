@@ -218,8 +218,14 @@ test('Android guest locale is set and verified through LocaleManager', () => {
   assert(uiInstaller.includes('cmd locale get-app-locales'), 'per-app locale verification missing');
   assert(uiEngine.includes('cmd locale set-app-locales'), 'Android Settings/system UI locale setup missing');
 });
-test('fork version and lockfile are synchronized with a three-digit build number', () => {
-  assert(/^\d+\.\d+\.\d+\.\d{3}$/.test(appPackage.version), `package version must end with a three-digit build number: ${appPackage.version}`);
+test('fork display version, valid SemVer package version, and lockfile are synchronized', () => {
+  const semverPattern = /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-(0|[1-9]\d*|[0-9A-Za-z-]*[A-Za-z-][0-9A-Za-z-]*(?:\.[0-9A-Za-z-]+)*))?(?:\+[0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*)?$/;
+  assert(semverPattern.test(appPackage.version), `package version must be valid SemVer: ${appPackage.version}`);
+  assert(/^\d+\.\d+\.\d+\.\d{3}$/.test(appPackage.displayVersion), `displayVersion must retain the four-part three-digit release label: ${appPackage.displayVersion}`);
+  const internal = appPackage.version.match(/^(\d+)\.(\d+)\.(\d+)-(\d+)$/);
+  const display = appPackage.displayVersion.match(/^(\d+)\.(\d+)\.(\d+)\.(\d{3})$/);
+  assert(internal && display, 'internal SemVer and public display version must use the expected release mapping');
+  assert(internal[1] === display[1] && internal[2] === display[2] && internal[3] === display[3] && Number(internal[4]) === Number(display[4]), 'internal SemVer and public display version must identify the same release');
   assert(appLock.version === appPackage.version && appLock.packages[''].version === appPackage.version, 'package lock version is out of sync');
 });
 
