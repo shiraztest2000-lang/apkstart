@@ -1935,5 +1935,20 @@
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
   else init();
-  window.ApkStartI18n = { apply };
+  function translateString(value, lang = localStorage.getItem('apkstart-language') || 'en') {
+    const source = String(value ?? '');
+    const language = ['en', 'fa'].includes(lang) ? lang : 'en';
+    const dictionary = dictionaries[language] || {};
+    const key = source.trim();
+    if (dictionary[key]) return source.replace(key, dictionary[key]);
+    let partial = source;
+    const fragments = Object.keys(dictionary)
+      .filter((item) => (item.length >= 3 || ['共 ', '自动', '待机', '引擎', '打开', '完成', '取消', '继续', '未知', '修复'].includes(item)) && /[\\u4e00-\\u9fff]/.test(item))
+      .sort((x, y) => y.length - x.length);
+    for (const item of fragments) {
+      if (partial.includes(item)) partial = partial.split(item).join(dictionary[item]);
+    }
+    return partial;
+  }
+  window.ApkStartI18n = { apply, translate: translateString };
 })();
