@@ -218,9 +218,9 @@ test('Android guest locale is set and verified through LocaleManager', () => {
   assert(uiInstaller.includes('cmd locale get-app-locales'), 'per-app locale verification missing');
   assert(uiEngine.includes('cmd locale set-app-locales'), 'Android Settings/system UI locale setup missing');
 });
-test('fork version and lockfile match upstream ApkStart 0.4.3', () => {
-  assert(appPackage.version === '0.4.3', `package version is ${appPackage.version}`);
-  assert(appLock.version === '0.4.3' && appLock.packages[''].version === '0.4.3', 'package lock version is out of sync');
+test('fork version and lockfile are synchronized with a three-digit build number', () => {
+  assert(/^\d+\.\d+\.\d+\.\d{3}$/.test(appPackage.version), `package version must end with a three-digit build number: ${appPackage.version}`);
+  assert(appLock.version === appPackage.version && appLock.packages[''].version === appPackage.version, 'package lock version is out of sync');
 });
 
 console.log(`\n结果：${passed} 通过，${failed} 失败\n`);
