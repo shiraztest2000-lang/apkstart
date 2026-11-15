@@ -1,7 +1,7 @@
 {
   "name": "apkstart",
   "productName": "ApkStart",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Windows Android app launcher / اجراکننده برنامه‌های اندروید در ویندوز",
   "main": "src/main.js",
   "author": "RoutineMiku",
