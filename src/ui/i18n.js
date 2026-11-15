@@ -879,9 +879,21 @@
     }
     const source = record.source;
     const key = source.trim();
-    const translated = dictionaries[lang] && dictionaries[lang][key];
+    const dictionary = dictionaries[lang] || {};
+    let translated = dictionary[key];
+    if (!translated) {
+      // Translate stable Chinese phrases inside dynamic strings (for example, counts and versions).
+      let partial = source;
+      const fragments = Object.keys(dictionary)
+        .filter((item) => item.length >= 3 && /[\\u4e00-\\u9fff]/.test(item))
+        .sort((a, b) => b.length - a.length);
+      for (const item of fragments) {
+        if (partial.includes(item)) partial = partial.split(item).join(dictionary[item]);
+      }
+      if (partial !== source) translated = partial;
+    }
     if (translated) {
-      const next = source.replace(key, translated);
+      const next = translated === dictionary[key] ? source.replace(key, translated) : translated;
       if (node.nodeValue !== next) node.nodeValue = next;
       record.translated = next;
     } else {
