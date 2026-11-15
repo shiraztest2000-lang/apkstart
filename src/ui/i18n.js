@@ -2158,6 +2158,80 @@
   Object.assign(dictionaries.en, auditedRuntimeTranslations.en);
   Object.assign(dictionaries.fa, auditedRuntimeTranslations.fa);
 
+  // Final pass: dynamic UI fragments and remaining runtime status / diagnostic strings.
+  const finalAuditTranslations = {
+  "en": {
+    "停止运行时": "Stop runtime",
+    "」的全部数据？此操作不可撤销。": "” All data for this app will be deleted. This action cannot be undone.",
+    " · 飞行模式": " · Airplane mode",
+    " · 已是精简状态": " · Already optimized",
+    "发现新版本 ": "New version found: ",
+    "现在约 ": "Currently available: ",
+    " GB 可用": " GB available",
+    " · 可回收 ": " · Reclaimable: ",
+    "…另有 ": "…and ",
+    " 项残留，约 ": " leftover item(s), about ",
+    "找到 ": "Found ",
+    " MB：": " MB:",
+    "删除 ": "Deleted ",
+    " 项，释放 ": " item(s), freed ",
+    "已就绪（": "Ready (",
+    " GB）": " GB)",
+    " 个严重": " critical issue(s)",
+    " 个提示": " warning(s)",
+    "释放约 ": "Freed about ",
+    "adb ": "ADB ",
+    " 就绪": " is ready",
+    "下载运行时引擎 ": "Downloading runtime engine ",
+    "运行时引擎 ": "Runtime engine ",
+    "下载兼容镜像 ": "Downloading compatibility image ",
+    "解压兼容镜像 ": "Extracting compatibility image ",
+    "QEMU ": "QEMU ",
+    "创建 ": "Creating ",
+    "GB 虚拟磁盘…": " GB virtual disk…",
+    "已自动按运行时版本挑选可用的 GPU 模式重试（老版本用 swiftshader_indirect，新版本用 software）。": "Automatically selected a GPU mode supported by this runtime version and retried (swiftshader_indirect for older versions; software for newer versions).",
+    "这类提示在部分老 CPU 上只是警告、仍能开机；若确实起不来，请把「运行时」里的引擎更新到较旧兼容版本，或换一台支持 VT-x/AVX 的电脑。": "On some older CPUs this is only a warning and the system may still boot. If it cannot start, install an older compatible engine under Runtime or use a PC that supports VT-x/AVX.",
+    "轻量容器": "Lightweight container",
+    "端口 ": "Port "
+  },
+  "fa": {
+    "停止运行时": "توقف محیط اجرا",
+    "」的全部数据？此操作不可撤销。": "»؟ همه داده‌های این برنامه حذف می‌شود و این کار قابل بازگشت نیست.",
+    " · 飞行模式": " · حالت پرواز",
+    " · 已是精简状态": " · از قبل بهینه شده است",
+    "发现新版本 ": "نسخه جدید پیدا شد: ",
+    "现在约 ": "فضای قابل‌استفاده فعلی: ",
+    " GB 可用": " گیگابایت در دسترس",
+    " · 可回收 ": " · قابل‌بازیابی: ",
+    "…另有 ": "و ",
+    " 项残留，约 ": " مورد باقی‌مانده، حدود ",
+    "找到 ": "پیدا شد: ",
+    " MB：": " مگابایت:",
+    "删除 ": "حذف شد: ",
+    " 项，释放 ": " مورد، فضای آزادشده: ",
+    "已就绪（": "آماده است (",
+    " GB）": " گیگابایت)",
+    " 个严重": " مورد بحرانی",
+    " 个提示": " مورد هشدار",
+    "释放约 ": "حدود ",
+    "adb ": "ADB ",
+    " 就绪": " آماده است",
+    "下载运行时引擎 ": "دانلود موتور اجرا ",
+    "运行时引擎 ": "موتور اجرا ",
+    "下载兼容镜像 ": "دانلود ایمیج سازگار ",
+    "解压兼容镜像 ": "استخراج ایمیج سازگار ",
+    "QEMU ": "QEMU ",
+    "创建 ": "در حال ساخت ",
+    "GB 虚拟磁盘…": " گیگابایت دیسک مجازی…",
+    "已自动按运行时版本挑选可用的 GPU 模式重试（老版本用 swiftshader_indirect，新版本用 software）。": "بر اساس نسخه محیط اجرا، حالت GPU سازگار انتخاب و دوباره امتحان شد (در نسخه‌های قدیمی swiftshader_indirect و در نسخه‌های جدید software).",
+    "这类提示在部分老 CPU 上只是警告、仍能开机；若确实起不来，请把「运行时」里的引擎更新到较旧兼容版本，或换一台支持 VT-x/AVX 的电脑。": "در برخی پردازنده‌های قدیمی این پیام فقط هشدار است و سیستم ممکن است اجرا شود. اگر اجرا نشد، موتور قدیمی‌تر و سازگارتر را از بخش «محیط اجرا» نصب کنید یا از رایانه‌ای با پشتیبانی VT-x/AVX استفاده کنید.",
+    "轻量容器": "کانتینر سبک",
+    "端口 ": "درگاه "
+  }
+};
+  Object.assign(dictionaries.en, finalAuditTranslations.en);
+  Object.assign(dictionaries.fa, finalAuditTranslations.fa);
+
   const original = new WeakMap();
   function translateTextNode(node, lang) {
     const raw = node.nodeValue;
