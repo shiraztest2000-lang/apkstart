@@ -3,6 +3,7 @@ name: Repair release metadata and remove obsolete releases
 on:
   push:
     branches: [main]
+    paths: ['.github/release-notes-v0.4.3-en.md']
 
 permissions:
   contents: write
