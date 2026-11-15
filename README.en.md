@@ -4,8 +4,7 @@
 
 <p align="center">
   <a href="README.fa.md">🇮🇷 فارسی</a> ·
-  <a href="README.en.md">🇬🇧 English</a> ·
-  <a href="README.zh-CN.md">🇨🇳 简体中文</a>
+  <a href="README.en.md">🇬🇧 English</a>
 </p>
 
 [![CI](https://github.com/RoutineMiku/apkstart/actions/workflows/ci.yml/badge.svg)](https://github.com/RoutineMiku/apkstart/actions/workflows/ci.yml)
@@ -62,7 +61,7 @@ npm test               # Run the automated test suites
 npm run selftest       # Run runtime checks after Android is deployed
 ```
 
-See the original [Simplified Chinese documentation](README.zh-CN.md) for more implementation details and advanced runtime notes.
+
 
 ## Runtime and compatibility
 
