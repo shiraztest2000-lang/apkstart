@@ -367,6 +367,8 @@ function nativeUiText(value) {
   return result;
 }
 
+const DISPLAY_VERSION = require('../package.json').displayVersion || app.getVersion();
+
 // ---------------- 命令行解析 ----------------
 
 function parseArgs(argv) {
@@ -739,8 +741,8 @@ function buildTray() {
               type: 'question',
               title: text('Update available', 'به‌روزرسانی جدید'),
               message: text(
-                `ApkStart ${info.tag} is available. Current version: v${app.getVersion()}. Update now?`,
-                `نسخه ${info.tag} منتشر شده است. نسخه فعلی: v${app.getVersion()}. اکنون به‌روزرسانی شود؟`
+                `ApkStart ${info.tag} is available. Current version: v${DISPLAY_VERSION}. Update now?`,
+                `نسخه ${info.tag} منتشر شده است. نسخه فعلی: v${DISPLAY_VERSION}. اکنون به‌روزرسانی شود؟`
               ),
               detail: (info.notes || '').slice(0, 600),
               buttons: [text('Update now', 'اکنون به‌روزرسانی کن'), text('Later', 'بعداً')],
@@ -749,7 +751,7 @@ function buildTray() {
             });
             if (r.response === 0) runUpdate();
           } else if (info && !info.hasUpdate) {
-            notify(text('Already up to date', 'برنامه به‌روز است'), `ApkStart v${app.getVersion()}`);
+            notify(text('Already up to date', 'برنامه به‌روز است'), `ApkStart v${DISPLAY_VERSION}`);
           }
         },
       },
@@ -974,7 +976,7 @@ function registerIpc() {
     return uiLanguage;
   });
 
-  ipcMain.handle('app:info', () => ({    version: app.getVersion(),
+  ipcMain.handle('app:info', () => ({    version: DISPLAY_VERSION,
     isDev: IS_DEV,
     dataDir: store.DATA_DIR,
     runtimeDir: runtime.provisioner.paths().root,
@@ -992,7 +994,7 @@ function registerIpc() {
       autostart: process.argv.includes('--autostart') || !!a.silent,
       launch: a.launch || null,
       smoke: process.argv.includes('--smoke'),
-      version: app.getVersion(),
+      version: DISPLAY_VERSION,
       isPackaged: app.isPackaged,
     };
   });
