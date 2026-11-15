@@ -205,6 +205,63 @@ let updateInfo = null;
 let uiLanguage = 'en';
 let refreshTrayMenu = null;
 
+const nativeUiTranslations = {
+  en: {
+    'ApkStart 仍在后台运行': 'ApkStart is still running in the background',
+    '点击托盘图标可重新打开；右键托盘可退出。': 'Click the tray icon to reopen it, or right-click the tray icon to quit.',
+    '安装完成': 'Installation complete', '安装失败': 'Installation failed',
+    '数据分区已调整': 'Data partition resized', '安卓可用空间约 ': 'Android available space: ',
+    '（运行时已重启）': ' (runtime restarted)', '磁盘空间不足': 'Low disk space',
+    '只剩 ': 'Only ', ' GB。请到「设置 → 系统集成」把安卓数据目录/运行时目录改到其他盘，或先清理磁盘。': ' GB left. Open Settings → System integration to move the Android data/runtime folder to another drive, or free up disk space.',
+    '快捷方式已补齐': 'Shortcuts restored',
+    '选择数据存放目录': 'Choose data directory', '选择要安装的 APK': 'Select APK files',
+    'Android 应用': 'Android apps', '选择 Android-x86 / Bliss OS 系统镜像': 'Select Android-x86 / Bliss OS system image',
+    '系统镜像': 'System images', '选择已安装 Android 的虚拟磁盘': 'Select a virtual disk with Android installed',
+    '虚拟磁盘': 'Virtual disks', '确认': 'Confirm', '取消': 'Cancel', '确定': 'OK',
+    '确认清理运行时缓存': 'Confirm runtime cache cleanup', '清理 ': 'Clean ',
+    ' 项': ' items', '将释放约 ': 'This will free about ', ' MB': ' MB',
+    '此操作不可撤销，建议先导出诊断报告。': 'This action cannot be undone. Export a diagnostic report first.',
+    '确定卸载「': 'Uninstall “', '」？': '”?', '应用数据会一并被清除，桌面快捷方式也会被删除。': ' App data and the desktop shortcut will also be removed.',
+    '清除「': 'Clear all data for “', '」的全部数据？此操作不可撤销。': '”? This cannot be undone.',
+    '重置安卓数据？': 'Reset Android data?', '修复虚拟机网络？': 'Repair virtual machine network?',
+    '立刻把安卓数据分区扩容？': 'Expand the Android data partition now?',
+    '将把 /data 调整为 ': 'The /data partition will be resized to ',
+    ' GB（就地扩容，已装应用和存档都会保留）。': ' GB (in-place; installed apps and saved data are preserved).'
+  },
+  fa: {
+    'ApkStart 仍在后台运行': 'ApkStart همچنان در پس‌زمینه فعال است',
+    '点击托盘图标可重新打开；右键托盘可退出。': 'برای بازکردن دوباره روی آیکون سینی کلیک کنید؛ برای خروج راست‌کلیک کنید.',
+    '安装完成': 'نصب کامل شد', '安装失败': 'نصب ناموفق بود',
+    '数据分区已调整': 'پارتیشن داده تغییر اندازه داد', '安卓可用空间约 ': 'فضای قابل‌استفاده اندروید: ',
+    '（运行时已重启）': ' (محیط اجرا دوباره راه‌اندازی شد)', '磁盘空间不足': 'فضای دیسک کافی نیست',
+    '只剩 ': 'فقط ', ' GB。请到「设置 → 系统集成」把安卓数据目录/运行时目录改到其他盘，或先清理磁盘。': ' گیگابایت باقی مانده است. از تنظیمات ← یکپارچه‌سازی سیستم، پوشه داده اندروید یا محیط اجرا را به دیسک دیگری منتقل کنید یا فضا آزاد کنید.',
+    '快捷方式已补齐': 'میان‌برها بازیابی شدند',
+    '选择数据存放目录': 'انتخاب پوشه داده‌ها', '选择要安装的 APK': 'انتخاب فایل‌های APK',
+    'Android 应用': 'برنامه‌های اندروید', '选择 Android-x86 / Bliss OS 系统镜像': 'انتخاب ایمیج سیستم Android-x86 / Bliss OS',
+    '系统镜像': 'ایمیج‌های سیستم', '选择已安装 Android 的虚拟磁盘': 'انتخاب دیسک مجازی دارای اندروید نصب‌شده',
+    '虚拟磁盘': 'دیسک‌های مجازی', '确认': 'تأیید', '取消': 'لغو', '确定': 'تأیید',
+    '确认清理运行时缓存': 'تأیید پاک‌سازی حافظه موقت محیط اجرا', '清理 ': 'پاک‌سازی ',
+    ' 项': ' مورد', '将释放约 ': 'حدوداً آزاد می‌شود: ', ' MB': ' مگابایت',
+    '此操作不可撤销，建议先导出诊断报告。': 'این کار قابل بازگشت نیست؛ بهتر است ابتدا گزارش عیب‌یابی صادر کنید.',
+    '确定卸载「': 'حذف نصب «', '」？': '»؟', '应用数据会一并被清除，桌面快捷方式也会被删除。': ' داده‌های برنامه و میان‌بر دسکتاپ نیز حذف می‌شوند.',
+    '清除「': 'پاک‌کردن همه داده‌های «', '」的全部数据？此操作不可撤销。': '»؟ این کار قابل بازگشت نیست.',
+    '重置安卓数据？': 'داده‌های اندروید بازنشانی شود؟', '修复虚拟机网络？': 'شبکه ماشین مجازی تعمیر شود؟',
+    '立刻把安卓数据分区扩容？': 'اکنون ظرفیت پارتیشن داده اندروید افزایش یابد؟',
+    '将把 /data 调整为 ': 'اندازه /data به ', ' GB（就地扩容，已装应用和存档都会保留）。': ' گیگابایت تغییر می‌کند (برنامه‌ها و داده‌های ذخیره‌شده حفظ می‌شوند).'
+  }
+};
+function nativeUiText(value) {
+  const source = String(value ?? '');
+  const dictionary = nativeUiTranslations[uiLanguage] || nativeUiTranslations.en;
+  let translated = dictionary[source];
+  if (translated) return translated;
+  let result = source;
+  for (const key of Object.keys(dictionary).filter((item) => item.length >= 3).sort((a, b) => b.length - a.length)) {
+    if (result.includes(key)) result = result.split(key).join(dictionary[key]);
+  }
+  return result;
+}
+
 // ---------------- 命令行解析 ----------------
 
 function parseArgs(argv) {
@@ -527,7 +584,7 @@ function notify(title, body) {
   if (store.getSettings().notifyOnInstall === false) return;
   try {
     const { Notification } = require('electron');
-    if (Notification.isSupported()) new Notification({ title, body, icon: nativeImage.createFromBuffer(ICON_PNG) }).show();
+    if (Notification.isSupported()) new Notification({ title: nativeUiText(title), body: nativeUiText(body), icon: nativeImage.createFromBuffer(ICON_PNG) }).show();
   } catch (_) { /* ignore */ }
 }
 
@@ -838,7 +895,7 @@ function registerIpc() {
   // 选文件夹（用于把运行时/镜像/已装应用挪到非系统盘）
   ipcMain.handle('dialog:openDir', async (_e, defaultPath) => {
     const r = await dialog.showOpenDialog(mainWindow, {
-      title: '选择数据存放目录',
+      title: nativeUiText('选择数据存放目录'),
       defaultPath: defaultPath || store.DATA_DIR,
       properties: ['openDirectory', 'createDirectory'],
     });
@@ -868,8 +925,8 @@ function registerIpc() {
 
   ipcMain.handle('apk:pick', async () => {
     const r = await dialog.showOpenDialog(mainWindow, {
-      title: '选择要安装的 APK',
-      filters: [{ name: 'Android 应用', extensions: ['apk', 'apks', 'xapk'] }],
+      title: nativeUiText('选择要安装的 APK'),
+      filters: [{ name: nativeUiText('Android 应用'), extensions: ['apk', 'apks', 'xapk'] }],
       properties: ['openFile', 'multiSelections'],
     });
     if (r.canceled) return [];
@@ -1137,10 +1194,10 @@ function registerIpc() {
   ipcMain.handle('app:confirm', async (_e, opts = {}) => {
     const { response } = await dialog.showMessageBox(mainWindow || undefined, {
       type: opts.type || 'question',
-      title: opts.title || '确认',
-      message: opts.message || '',
-      detail: opts.detail || '',
-      buttons: ['取消', opts.okLabel || '确定'],
+      title: nativeUiText(opts.title || '确认'),
+      message: nativeUiText(opts.message || ''),
+      detail: nativeUiText(opts.detail || ''),
+      buttons: [nativeUiText('取消'), nativeUiText(opts.okLabel || '确定')],
       defaultId: 1,
       cancelId: 0,
       noLink: true,
@@ -1432,8 +1489,8 @@ function registerIpc() {
 
   ipcMain.handle('provision:importIso', async () => {
     const r = await dialog.showOpenDialog(mainWindow, {
-      title: '选择 Android-x86 / Bliss OS 系统镜像',
-      filters: [{ name: '系统镜像', extensions: ['iso', 'img'] }],
+      title: nativeUiText('选择 Android-x86 / Bliss OS 系统镜像'),
+      filters: [{ name: nativeUiText('系统镜像'), extensions: ['iso', 'img'] }],
       properties: ['openFile'],
     });
     if (r.canceled) return { ok: false, canceled: true };
@@ -1446,8 +1503,8 @@ function registerIpc() {
 
   ipcMain.handle('provision:importDisk', async () => {
     const r = await dialog.showOpenDialog(mainWindow, {
-      title: '选择已安装 Android 的虚拟磁盘',
-      filters: [{ name: '虚拟磁盘', extensions: ['qcow2', 'img', 'vmdk', 'raw'] }],
+      title: nativeUiText('选择已安装 Android 的虚拟磁盘'),
+      filters: [{ name: nativeUiText('虚拟磁盘'), extensions: ['qcow2', 'img', 'vmdk', 'raw'] }],
       properties: ['openFile'],
     });
     if (r.canceled) return { ok: false, canceled: true };
