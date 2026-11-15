@@ -1,55 +1,54 @@
-# 贡献指南
+# Contributing Guide
 
-欢迎提交 Issue 和 Pull Request。这个项目的原则是**壳层零依赖、行为可预测**，所以请先读一下下面的约定。
+Issues and pull requests are welcome. This project aims to keep the desktop shell dependency-free and its behavior predictable. Please read the guidelines below before contributing.
 
-## 开发环境
+## Development Environment
 
 - Windows 10/11 x64
-- Node.js ≥ 20
+- Node.js 20 or later
 - `npm install && npm start`
 
-## 提交前自检
+## Pre-submission Checks
 
 ```powershell
-npm test          # 纯 Node 单元测试 + 引擎链路测试（不需要网络、不需要虚拟机）
+npm test          # Pure Node.js unit tests and runtime-flow tests (no network or virtual machine required)
 ```
 
-涉及界面改动时，建议再跑一次冒烟截图确认没有布局塌陷：
+For UI changes, it is also recommended to capture a smoke-test screenshot and check that the layout remains intact:
 
 ```powershell
-electron . --smoke test\shot.png
+electron . --smoke test\\shot.png
 ```
 
-## 代码约定
+## Coding Conventions
 
-- **壳层不引入第三方运行时依赖**。`src/core/` 下的 ZIP / AXML / ARSC / PNG / ICO 解析都是手写的，
-  新增功能时优先考虑「能不能用 Node 内置模块写完」，避免为了小功能拉进一个大包。
-- 渲染层是原生 HTML/CSS/JS，不使用前端框架。
-- 与安卓侧交互一律走 `src/core/adb.js`，不要在各处直接拼 adb 命令。
-- 主进程与渲染进程之间只通过 `preload.js` 暴露的白名单通道通信，保持 `contextIsolation` 开启。
-- 注释与 UI 文案使用中文，标识符使用英文。
+- **Do not add third-party runtime dependencies to the desktop shell.** ZIP / AXML / ARSC / PNG / ICO parsing under `src/core/` is implemented in-house. Prefer Node.js built-in modules when adding features instead of introducing a large package for a small task.
+- The renderer uses native HTML/CSS/JavaScript and does not use a frontend framework.
+- All Android-side communication must go through `src/core/adb.js`; do not construct adb commands independently throughout the codebase.
+- The main and renderer processes must communicate only through the allowlisted channels exposed by `preload.js`. Keep `contextIsolation` enabled.
+- Write comments and user-interface text in English. Keep identifiers in English as well.
 
-## 测试约定
+## Testing Guidelines
 
-- 拿不到真实 APK 时测试会自动跳过 APK 解析部分；要覆盖这部分，设置环境变量指向任意 APK：
+- If no real APK is available, tests automatically skip the APK parsing portion. To cover it, set the environment variable to point to any APK:
 
 ```powershell
-$env:APKSTART_TEST_APK="C:\path\to\any.apk"; npm test
+$env:APKSTART_TEST_APK="C:\\path\\to\\any.apk"; npm test
 ```
 
-- 不要在测试里访问外网。需要网络行为的测试请起本地 `http` 服务（参考 `test/engine-test.js`）。
+- Do not access external networks from tests. For tests that need network behavior, start a local `http` server (see `test/engine-test.js`).
 
-## 提交信息
+## Commit Messages
 
-使用 Conventional Commits 风格，例如：
+Use the Conventional Commits style, for example:
 
 ```
-feat(engine): 支持从自定义路径导入 qcow2 磁盘
-fix(axml): 修正属性表基址偏移
-docs: 补充 WHPX 开启说明
+feat(engine): support importing qcow2 disks from a custom path
+fix(axml): correct the attribute-table base offset
+docs: add instructions for enabling WHPX
 ```
 
-## 法律与边界
+## Legal and Scope
 
-- 本项目不分发任何安卓系统镜像、QEMU 二进制或 Google 组件，全部由用户本机按需下载。
-- 请勿在仓库中提交商业 APK、破解工具或任何侵犯第三方版权的内容。
+- This project does not distribute Android system images, QEMU binaries, or Google components. They are downloaded on demand by the user's machine.
+- Do not commit commercial APKs, cracking tools, or content that infringes third-party copyrights to this repository.
