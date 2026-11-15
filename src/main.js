@@ -202,6 +202,8 @@ let androidSet = null;
 let updater = null;
 let updateBusy = false;
 let updateInfo = null;
+let uiLanguage = 'en';
+let refreshTrayMenu = null;
 
 // ---------------- 命令行解析 ----------------
 
@@ -542,24 +544,29 @@ function buildTray() {
   } catch (_) {
     return;
   }
+  const text = (en, fa) => uiLanguage === 'fa' ? fa : en;
   const refresh = () => {
     const apps = store.getApps().slice(0, 8);
     const menu = Menu.buildFromTemplate([
-      { label: '打开 ApkStart', click: () => showWindow() },
+      { label: text('Open ApkStart', 'باز کردن ApkStart'), click: () => showWindow() },
       { type: 'separator' },
       ...(apps.length
         ? apps.map((a) => ({ label: a.label, click: () => runLaunch(a.package) }))
-        : [{ label: '还没有安装应用', enabled: false }]),
+        : [{ label: text('No apps installed yet', 'هنوز برنامه‌ای نصب نشده است'), enabled: false }]),
       { type: 'separator' },
       {
-        label: displaySettings().mode === 'fullscreen' ? '切回竖屏窗口' : '全屏（自适应屏幕）',
+        label: displaySettings().mode === 'fullscreen'
+          ? text('Switch to portrait window', 'بازگشت به پنجره عمودی')
+          : text('Fullscreen (fit screen)', 'تمام‌صفحه (متناسب با صفحه)'),
         click: () => { toggleDisplayMode(); },
       },
-      { label: '重建桌面/开始菜单快捷方式', click: () => { installer.ensureShortcuts().catch(() => {}); } },
-      { label: '同步共享目录', click: () => sharer.sync() },
-      { label: '设置', click: () => { showWindow(); send('ui:navigate', 'settings'); } },
+      { label: text('Rebuild desktop / Start menu shortcuts', 'بازسازی میان‌برهای دسکتاپ و منوی شروع'), click: () => { installer.ensureShortcuts().catch(() => {}); } },
+      { label: text('Sync shared folder', 'همگام‌سازی پوشه اشتراکی'), click: () => sharer.sync() },
+      { label: text('Settings', 'تنظیمات'), click: () => { showWindow(); send('ui:navigate', 'settings'); } },
       {
-        label: updateInfo && updateInfo.hasUpdate ? `发现新版本 ${updateInfo.tag}` : '检查更新',
+        label: updateInfo && updateInfo.hasUpdate
+          ? text(`New version available: ${updateInfo.tag}`, `نسخه جدید موجود است: ${updateInfo.tag}`)
+          : text('Check for updates', 'بررسی به‌روزرسانی'),
         click: async () => {
           showWindow();
           send('ui:navigate', 'settings');
@@ -568,22 +575,25 @@ function buildTray() {
           if (info && info.hasUpdate && info.asset) {
             const r = await dialog.showMessageBox(mainWindow || undefined, {
               type: 'question',
-              title: '发现新版本',
-              message: `ApkStart ${info.tag} 已发布，当前版本 v${app.getVersion()}。现在更新吗？`,
+              title: text('Update available', 'به‌روزرسانی جدید'),
+              message: text(
+                `ApkStart ${info.tag} is available. Current version: v${app.getVersion()}. Update now?`,
+                `نسخه ${info.tag} منتشر شده است. نسخه فعلی: v${app.getVersion()}. اکنون به‌روزرسانی شود؟`
+              ),
               detail: (info.notes || '').slice(0, 600),
-              buttons: ['立即更新', '稍后'],
+              buttons: [text('Update now', 'اکنون به‌روزرسانی کن'), text('Later', 'بعداً')],
               defaultId: 0,
               cancelId: 1,
             });
             if (r.response === 0) runUpdate();
           } else if (info && !info.hasUpdate) {
-            notify('已是最新版本', `ApkStart v${app.getVersion()}`);
+            notify(text('Already up to date', 'برنامه به‌روز است'), `ApkStart v${app.getVersion()}`);
           }
         },
       },
       { type: 'separator' },
       {
-        label: '退出',
+        label: text('Exit', 'خروج'),
         click: async () => {
           try { appWin.close({ keepApp: true }); } catch (_) { /* ignore */ }
           quitting = true;
@@ -593,7 +603,8 @@ function buildTray() {
     ]);
     tray.setContextMenu(menu);
   };
-  tray.setToolTip('ApkStart — 安卓应用运行器');
+  refreshTrayMenu = refresh;
+  tray.setToolTip(text('ApkStart — Android app launcher', 'ApkStart — اجراکننده برنامه‌های اندروید'));
   // Windows 托盘的惯例是单击就打开主窗口（双击当然也可以）。
   // 之前只绑了 double-click，用户单击没反应，会以为托盘图标坏了。
   // 右键才出菜单，所以这里单击直接 showWindow 不会和菜单冲突。
@@ -795,6 +806,12 @@ function startNotifier() {
 // ---------------- IPC ----------------
 
 function registerIpc() {
+  ipcMain.handle('app:setLanguage', (_e, language) => {
+    uiLanguage = language === 'fa' ? 'fa' : 'en';
+    if (refreshTrayMenu) refreshTrayMenu();
+    return uiLanguage;
+  });
+
   ipcMain.handle('app:info', () => ({    version: app.getVersion(),
     isDev: IS_DEV,
     dataDir: store.DATA_DIR,
