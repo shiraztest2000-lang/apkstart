@@ -204,9 +204,9 @@ test('Native dialogs and notifications follow the selected UI language', () => {
   assert(uiMain.includes("message: nativeUiText(opts.message || '')"), 'native confirmation messages must be translated');
 });
 test('Android guest locale is set and verified through LocaleManager', () => {
-  assert(uiEngine.includes('cmd locale set-system-locales en-US'), 'Android system locale command missing');
-  assert(uiEngine.includes('cmd locale get-system-locales'), 'Android system locale verification missing');
-  assert(!uiEngine.includes("client.exec(['root'])"), 'locale setup must not rely on adb root on Google Play images');
+  const uiInstaller = fs.readFileSync(path.join(__dirname, '../src/core/installer.js'), 'utf8');
+  assert(uiInstaller.includes('cmd locale set-app-locales'), 'per-app English locale command missing');
+  assert(uiInstaller.includes('cmd locale get-app-locales'), 'per-app locale verification missing');
 });
 test('fork version and lockfile match upstream ApkStart 0.4.3', () => {
   assert(appPackage.version === '0.4.3', \`package version is \${appPackage.version}\`);
