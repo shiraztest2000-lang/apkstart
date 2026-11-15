@@ -1035,7 +1035,7 @@
         const source = el.dataset[key.replace(':','')];
         const translated = dictionaries[language] && dictionaries[language][source];
         if (translated) el.setAttribute(attr, translated);
-        else if (language === 'zh') el.setAttribute(attr, source);
+        else el.setAttribute(attr, source);
       });
     });
     const picker = document.getElementById('languagePicker');
@@ -1069,7 +1069,7 @@
           const source = el.dataset[dataKey];
           const translated = dictionaries[lang] && dictionaries[lang][source];
           if (translated) el.setAttribute(attr, translated);
-          else if (lang === 'zh') el.setAttribute(attr, source);
+          else el.setAttribute(attr, source);
         });
       }
     };
