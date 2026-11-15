@@ -932,9 +932,17 @@
 
   function init() {
     const picker = document.getElementById('languagePicker');
-    const saved = localStorage.getItem('apkstart-language') || 'en';
-    if (picker) picker.addEventListener('change', () => apply(picker.value));
-    apply(saved);
+    const saved = localStorage.getItem('apkstart-language');
+    // Older builds wrote Chinese as the implicit first-run default. Migrate that
+    // implicit value to English; future user selections are always preserved.
+    const initial = saved === 'zh' && localStorage.getItem('apkstart-language-explicit') !== '1'
+      ? 'en'
+      : (saved || 'en');
+    if (picker) picker.addEventListener('change', () => {
+      localStorage.setItem('apkstart-language-explicit', '1');
+      apply(picker.value);
+    });
+    apply(initial);
     const translateAttributes = (root, lang) => {
       const nodes = [];
       if (root.nodeType === Node.ELEMENT_NODE) nodes.push(root);
